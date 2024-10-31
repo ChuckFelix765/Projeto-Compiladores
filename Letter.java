@@ -4,13 +4,16 @@ import java.util.ArrayList;
 
 
 public class Letter extends AFD {
+
+	boolean cha = false;
+	boolean str = false;
 	@Override
 	public Token evaluate(CharacterIterator code) {
 		//palavras reservadas
 		ArrayList<String> reservadas = new ArrayList<>();
 		reservadas.add("if");
 		reservadas.add("else");
-		//reservadas.add("else if");
+		reservadas.add("elif");
 		reservadas.add("for");
 		reservadas.add("while");
 		reservadas.add("int");
@@ -21,7 +24,7 @@ public class Letter extends AFD {
 		reservadas.add("break");
 		reservadas.add("continue");
 		reservadas.add("boolean");
-		reservadas.add("System.out.println");
+		reservadas.add("print");
 
 		if(Character.isLetter(code.current())) {
 			String letter = readLetter(code);
@@ -32,6 +35,12 @@ public class Letter extends AFD {
 
 			else if (endLetter(code)) {
 				return new Token("VAR", letter);
+			}else if(cha == true && str == false){
+				cha = false;
+				return new Token("CHAR", letter);
+			}else if(cha == false && str == true){
+				str = false;
+				return new Token("STR", letter);
 			}
 		}
 		return null;
@@ -42,6 +51,26 @@ public class Letter extends AFD {
 			letter += code.current();
 			code.next();
 		}
+
+		/*if(code.current()=='\''){
+			cha = true;
+			letter += "\'";
+			code.next();
+
+			while(Character.isLetter(code.current())){
+				letter += code.current();
+				code.next();
+			}
+		}else if(code.current()=='\"'){
+			str = true;
+			letter += "\"";
+			code.next();
+
+			while(Character.isLetter(code.current())){
+				letter += code.current();
+				code.next();
+			}
+		}*/
 		return letter;
 	}
 
