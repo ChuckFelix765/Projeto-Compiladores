@@ -121,7 +121,11 @@ public class Parser {
     }
 
     public boolean atrib(){
-        return true;
+        if(matchT("VAR") && matchL("=") && (matchT("VAR")||matchT("INT")||matchT("FLT"))){
+            return true;
+        }
+        erro("atrib");
+        return false;
     }
 
     public boolean condicao(){
