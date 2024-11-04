@@ -12,20 +12,17 @@ public class Parser {
     }
     private void erro(String regra){
         System.out.println("Regra: " + regra);
-        System.out.println("token inválido: " + token.getLexema());
+        System.out.println("token invalido: " + token.getLexema());
         System.exit(0); //encerra o parser
     }
     
     public void main(){
         token = nextToken();
-        if(verifica()){
+        while(token.getTipo()!="EOF"){
+            verifica();
             if(token.getTipo() == "EOF"){
                 System.out.println("Sintaticamente correto");
-            }else{
-                erro("EOF");
             }
-        }else{
-            erro("fim do verifica");
         }
     }
 
@@ -42,27 +39,27 @@ public class Parser {
             if(elseif()) return true;
         }else if(token.getTipo().equals("VAR")){
             if(atrib()) return true;
-        }else if(token.getLexema().equals("$")){
-            return true;
+        }else if(token.getTipo().equals("RES")){
+            if(dete()) return true;
         }
         erro("verifica");
         return false;
     }
 
-    public boolean init(){
-        if(bloco() || exis()){
-            return true;
-        }
-        erro("init");
-        return false;
-    }
+    // public boolean init(){
+    //     if(bloco() && exis()){
+    //         return true;
+    //     }
+    //     erro("init");
+    //     return false;
+    // }
 
-    public boolean exis(){
-        if(init()){
-            return true;
-        }
-        return true;
-    }
+    // public boolean exis(){
+    //     if(init()){
+    //         return true;
+    //     }
+    //     return true;
+    // }
 
     public boolean bloco(){
         while(!token.getLexema().equals("}")){
@@ -122,8 +119,16 @@ public class Parser {
         return false;
     }
 
+    public boolean dete(){
+        if(matchT("RES") && matchT("VAR")){
+            return true;
+        }
+        erro("dete");
+        return false;
+    }
+
     public boolean atrib(){
-        if(matchT("VAR") && matchL("=") && (matchT("VAR")||matchT("INT")||matchT("FLT"))){
+        if(matchT("VAR") && operador() && (matchT("VAR")||matchT("INT")||matchT("FLT"))){
             return true;
         }
         erro("atrib");
@@ -147,7 +152,7 @@ public class Parser {
     }
 
     public boolean expressao(){
-        if(matchT("VAR") && matchL("=") && (matchT("INT") || matchT("FLT"))){
+        if((matchT("INT") || matchT("FLT")) && operador() && (matchT("INT") || matchT("FLT"))){
             return true;
         }
         erro("expressao");
@@ -155,7 +160,7 @@ public class Parser {
     }
 
     public boolean operador(){
-        if(matchL("+") || matchL("-") || matchL("*") || matchL("/") || matchL("%") || matchL("==") || matchL("<") || matchL(">")){
+        if(matchL("+") || matchL("-") || matchL("*") || matchL("/") || matchL("%") || matchL("==") || matchL("<") || matchL(">") || matchL("=")){
             //Falta %, (, ), :;
             return true;
         }
