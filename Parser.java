@@ -40,10 +40,10 @@ public class Parser {
             if(elsee()) return true;
         }else if(token.getLexema().equals("elif")){
             if(elseif()) return true;
-        }else if(token.getLexema().equals("$")){
-            return true;
         }else if(token.getTipo().equals("VAR")){
             if(atrib()) return true;
+        }else if(token.getLexema().equals("$")){
+            return true;
         }
         erro("verifica");
         return false;
@@ -84,40 +84,42 @@ public class Parser {
     }
 
     public boolean elseif(){
-        if(matchL("elif") && condicao() && matchL("{") && expressao() && matchL("}")){
-            if(verifica()){
-                return true;
-            }
+        if(matchL("elif") && condicao() && matchL("{") && bloco() && matchL("}")){
+            return true;
         }
         erro("elsee");
         return false;
     }
 
     public boolean elsee(){
-        if(matchL("else") && matchL("{") && expressao() && matchL("}")){
-            if(verifica()){
-                return true;
-            }
+        if(matchL("else") && matchL("{") && bloco() && matchL("}")){
+            return true;
         }
         erro("elsee");
         return false;
     }
 
     public boolean whilee(){
-        if(matchL("while") && condicao() && matchL(":") && expressao()){
-            if(verifica()){
-                return true;
-            }
+        if(matchL("while") && condicao() && matchL("{") && bloco() && matchL("}")){
+            return true;
         }
         erro("whilee");
         return false;
     }
 
     public boolean fore(){
-        if(matchL("for") && matchL("(") && condicao()){
+        if(matchL("for") && condicao() && matchL(";") && condicao() && matchL(";") && incr()){
             ;
         }return true;
         //for(id = 0; i< 10; i++)
+    }
+
+    public boolean incr(){
+        if((matchT("VAR")||matchT("INT")||matchT("FLT")) && operador() && operador()){
+            return true;
+        }
+        erro("incr");
+        return false;
     }
 
     public boolean atrib(){

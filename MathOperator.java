@@ -50,6 +50,9 @@ public class MathOperator extends AFD {
 			case ':':
 				code.next();
 				return new Token("DOSP",":");
+			case ',':
+				code.next();
+				return new Token("VIRG",",");
 
 		default:
 			return null;
