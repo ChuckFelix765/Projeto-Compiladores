@@ -26,6 +26,18 @@ public class Letter extends AFD {
 		reservadas.add("boolean");
 		reservadas.add("print");
 
+		if(code.current() == ('\"')){
+			String palavra = "";
+			code.next();
+			while(code.current() != '\"'){
+				System.out.println(code.current());
+				palavra += code.current();
+				code.next();
+			}
+			code.next();
+			return new Token("String", palavra);
+		}
+
 		if(Character.isLetter(code.current())) {
 			String letter = readLetter(code);
 
@@ -81,7 +93,7 @@ public class Letter extends AFD {
 		code.current() == '*' ||
 		code.current() == '/' ||
 		code.current() == '%' ||
-		code.current() == '\n'||
+		code.current() == '\n' ||
 		code.current() == '(' ||
 		code.current() == ')' ||
 		code.current() == '>' ||
