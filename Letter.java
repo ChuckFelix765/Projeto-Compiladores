@@ -9,21 +9,21 @@ public class Letter extends AFD {
 	public Token evaluate(CharacterIterator code) {
 		//palavras reservadas
 		ArrayList<String> reservadas = new ArrayList<>();
-		reservadas.add("if");
-		reservadas.add("else");
-		reservadas.add("elif");
-		reservadas.add("for");
-		reservadas.add("while");
-		reservadas.add("int");
-		reservadas.add("float");
-		reservadas.add("String");
-		reservadas.add("char");
-		reservadas.add("return");
-		reservadas.add("break");
-		reservadas.add("continue");
-		reservadas.add("boolean");
-		reservadas.add("print");
-
+		reservadas.add("si"); //if
+		reservadas.add("sino"); //else
+		reservadas.add("enton"); //elif
+		reservadas.add("para"); //for
+		reservadas.add("mientras"); //whiles
+		reservadas.add("entero"); //int
+		reservadas.add("flotante"); //float
+		reservadas.add("palabra"); // String
+		reservadas.add("letra"); //char
+		reservadas.add("retorna"); //return
+		reservadas.add("rompe"); //break
+		reservadas.add("continua"); //continue
+		reservadas.add("mugrilo"); //boolean
+		reservadas.add("escriba"); //input
+		reservadas.add("muestrame"); //print
 		if(code.current() == ('\"')){
 			String palavra = "";
 			code.next();
@@ -100,6 +100,7 @@ public class Letter extends AFD {
 		code.current() == '<' ||
 		code.current() == ':' ||
 		code.current() == ',' ||
+		code.current() == ';' ||
 		code.current() == CharacterIterator.DONE;
 	}
 }

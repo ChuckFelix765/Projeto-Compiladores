@@ -20,34 +20,37 @@ public class Parser {
     }
     
     public void main(){
-        token = nextToken();
         print("#include <stdio.h>\n\nint main(){\n");
+        token = nextToken();
+        
         while(token.getTipo()!="EOF"){
             verifica();
             if(token.getTipo() == "EOF"){
                 print("\n}");
-                //System.out.println("\nSintaticamente correto");
+                System.out.println("\nSintaticamente correto");
                 try(FileWriter writer = new FileWriter("Code.c")){
                     writer.write(tradutor.toString());
                 }catch (IOException e){
                     System.out.println(e);
                 }
-                //System.out.print(tradutor.toString());
+                System.out.print(tradutor.toString());
             }
         }
     }
 
     public boolean verifica(){
-        if(token.getLexema().equals("if")){
+        if(token.getLexema().equals("si")){ //if
             if(iff()) return true;
-        }else if(token.getLexema().equals("while")){
+        }else if(token.getLexema().equals("mientras")){ //while
             if(whilee()) return true;
-        }else if(token.getLexema().equals("for")){
+        }else if(token.getLexema().equals("para")){ //for
             if(fore()) return true;
-        }else if(token.getLexema().equals("else")){
+        }else if(token.getLexema().equals("sino")){ //else
             if(elsee()) return true;
-        }else if(token.getLexema().equals("elif")){
+        }else if(token.getLexema().equals("enton")){ //elif
             if(elseif()) return true;
+        }else if(token.getLexema().equals("escriba")){ //print
+            if(inputt()) return true;
         }else if(token.getTipo().equals("VAR")){
             if(atrib()) return true;
         }else if(token.getTipo().equals("RES")){
@@ -65,7 +68,7 @@ public class Parser {
     }
 
     public boolean iff(){
-        if(matchL("if","if ") && condicao() && matchL("{","{\n") && bloco() && matchL("}","\n}")){
+        if(matchL("si","if ") && matchL("(","(") &&  condicao() && matchL(")",")") && matchL("{","{\n") && bloco() && matchL("}","\n}")){
             return true;
         }
         erro("iff");
@@ -73,7 +76,7 @@ public class Parser {
     }
 
     public boolean elseif(){
-        if(matchL("elif","elif ") && condicao() && matchL("{","{\n") && bloco() && matchL("}","\n}")){
+        if(matchL("enton","elif ") && matchL("(","(") && condicao() && matchL(")",")") && matchL("{","{\n") && bloco() && matchL("}","\n}")){
             return true;
         }
         erro("elsif");
@@ -81,7 +84,7 @@ public class Parser {
     }
 
     public boolean elsee(){
-        if(matchL("else","else ") && matchL("{","{\n") && bloco() && matchL("}","\n}")){
+        if(matchL("sino","else ") && matchL("{","{\n") && bloco() && matchL("}","\n}")){
             return true;
         }
         erro("elsee");
@@ -89,7 +92,7 @@ public class Parser {
     }
 
     public boolean whilee(){
-        if(matchL("while","while ") && condicao() && matchL("{","{\n") && bloco() && matchL("}","\n}")){
+        if(matchL("mientras","while ") && matchL("(","(") && condicao() && matchL(")",")") && matchL("{","{\n") && bloco() && matchL("}","\n}")){
             return true;
         }
         erro("whilee");
@@ -97,10 +100,19 @@ public class Parser {
     }
 
     public boolean fore(){
-        if(matchL("for") && condicao() && matchL(";") && condicao() && matchL(";") && incr()){
-            ;
-        }return true;
-        //for(id = 0; i< 10; i++)
+        if(matchL("para","for ") && matchL("(","(") && atrib() && matchL(";") && condicao() && matchL(";") && incr() && matchL(")",")") && matchL("{","{\n") && bloco() && matchL("}","\n}")){
+            return true;
+        }
+        erro("fore");
+        return false;
+    }
+
+    public boolean inputt(){
+        if(matchL("escriba", "scanf") && matchL("(", "(\"%s\"") && matchT("VAR", ", &"+token.getLexema()) && matchL(")", ");")){
+            return true;
+        }
+        erro("input");
+        return false;
     }
 
     public boolean incr(){
@@ -129,7 +141,7 @@ public class Parser {
     }
 
     public boolean condicao(){
-        if(matchL("(","(") && valor() && operador() && valor() && matchL(")",")")){
+        if(valor() && operador() && valor()){
             return true;
         }
         erro("condicao");
@@ -154,8 +166,9 @@ public class Parser {
 
     public boolean operador(){
         if(matchL("+"," + ") || matchL("-"," - ") || matchL("*"," * ") || matchL("/"," / ")
-         || matchL("%"," % ") || matchL("=="," == ") || matchL("<"," < ") || matchL(">"," > ") || matchL("="," = ")){
-            //Falta %, (, ), :;
+         || matchL("%"," % ") || matchL("=="," == ") || matchL("<"," < ") || matchL(">"," > ") || 
+         matchL("="," = ")){
+            //Falta  (, ), :;
             return true;
         }
         erro("operador");
