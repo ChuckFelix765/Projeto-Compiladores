@@ -1,8 +1,11 @@
 import java.util.List;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Parser {
     List<Token> tokens;
     Token token;
+    StringBuilder tradutor = new StringBuilder();
 
     public Parser(List<Token> tokens){
         this.tokens = tokens;
@@ -18,10 +21,18 @@ public class Parser {
     
     public void main(){
         token = nextToken();
+        print("#include <stdio.h>\n\nint main(){\n");
         while(token.getTipo()!="EOF"){
             verifica();
             if(token.getTipo() == "EOF"){
-                System.out.println("\nSintaticamente correto");
+                print("\n}");
+                //System.out.println("\nSintaticamente correto");
+                try(FileWriter writer = new FileWriter("Code.c")){
+                    writer.write(tradutor.toString());
+                }catch (IOException e){
+                    System.out.println(e);
+                }
+                //System.out.print(tradutor.toString());
             }
         }
     }
@@ -46,21 +57,6 @@ public class Parser {
         return false;
     }
 
-    // public boolean init(){
-    //     if(bloco() && exis()){
-    //         return true;
-    //     }
-    //     erro("init");
-    //     return false;
-    // }
-
-    // public boolean exis(){
-    //     if(init()){
-    //         return true;
-    //     }
-    //     return true;
-    // }
-
     public boolean bloco(){
         while(!token.getLexema().equals("}")){
             verifica();
@@ -69,27 +65,23 @@ public class Parser {
     }
 
     public boolean iff(){
-        if(matchL("if","if ") && condicao() && matchL("{","{\n") && bloco() && matchL("}",";\n}")){
+        if(matchL("if","if ") && condicao() && matchL("{","{\n") && bloco() && matchL("}","\n}")){
             return true;
-        // if(matchL("if") && condicao() && matchL("{") && (expressao() || iff()) && matchL("}")||verifica()){
-        //     if(verifica()){
-        //         return true;
-        //     }
         }
         erro("iff");
         return false;
     }
 
     public boolean elseif(){
-        if(matchL("elif") && condicao() && matchL("{") && bloco() && matchL("}")){
+        if(matchL("elif","elif ") && condicao() && matchL("{","{\n") && bloco() && matchL("}","\n}")){
             return true;
         }
-        erro("elsee");
+        erro("elsif");
         return false;
     }
 
     public boolean elsee(){
-        if(matchL("else") && matchL("{") && bloco() && matchL("}")){
+        if(matchL("else","else ") && matchL("{","{\n") && bloco() && matchL("}","\n}")){
             return true;
         }
         erro("elsee");
@@ -97,7 +89,7 @@ public class Parser {
     }
 
     public boolean whilee(){
-        if(matchL("while") && condicao() && matchL("{") && bloco() && matchL("}")){
+        if(matchL("while","while ") && condicao() && matchL("{","{\n") && bloco() && matchL("}","\n}")){
             return true;
         }
         erro("whilee");
@@ -128,7 +120,8 @@ public class Parser {
     }
 
     public boolean atrib(){
-        if(matchT("VAR",token.getLexema()) && operador() && (matchT("VAR",token.getLexema())||matchT("INT",token.getLexema())||matchT("FLT",token.getLexema())||matchT("STRG",token.getLexema())||matchT("CHAR",token.getLexema())||expressao())){
+        if(matchT("VAR",token.getLexema()) && operador() && (matchT("VAR",token.getLexema()+";")||matchT("INT",token.getLexema()+";")||matchT("FLT",token.getLexema()+";")
+        ||matchT("STRG",token.getLexema()+";")||matchT("CHAR",token.getLexema()+";")||expressao())){
             return true;
         }
         erro("atrib");
@@ -160,7 +153,8 @@ public class Parser {
     }
 
     public boolean operador(){
-        if(matchL("+",token.getLexema()) || matchL("-",token.getLexema()) || matchL("*",token.getLexema()) || matchL("/",token.getLexema()) || matchL("%",token.getLexema()) || matchL("==",token.getLexema()) || matchL("<",token.getLexema()) || matchL(">",">") || matchL("=",token.getLexema())){
+        if(matchL("+"," + ") || matchL("-"," - ") || matchL("*"," * ") || matchL("/"," / ")
+         || matchL("%"," % ") || matchL("=="," == ") || matchL("<"," < ") || matchL(">"," > ") || matchL("="," = ")){
             //Falta %, (, ), :;
             return true;
         }
@@ -205,6 +199,7 @@ public class Parser {
     }
     
     public void print(String code){
-        System.out.print(code);
+        //System.out.print(code);
+        tradutor.append(code);
     }
 }
