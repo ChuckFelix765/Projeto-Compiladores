@@ -5,8 +5,6 @@ import java.util.ArrayList;
 
 public class Letter extends AFD {
 
-	boolean cha = false;
-	boolean str = false;
 	@Override
 	public Token evaluate(CharacterIterator code) {
 		//palavras reservadas
@@ -30,12 +28,20 @@ public class Letter extends AFD {
 			String palavra = "";
 			code.next();
 			while(code.current() != '\"'){
-				System.out.println(code.current());
 				palavra += code.current();
 				code.next();
 			}
 			code.next();
-			return new Token("String", palavra);
+			return new Token("STRG", palavra);
+		}else if(code.current() == ('\'')){
+			String palavra = "";
+			code.next();
+			while(code.current() != '\''){
+				palavra += code.current();
+				code.next();
+			}
+			code.next();
+			return new Token("CHAR", palavra);
 		}
 
 		if(Character.isLetter(code.current())) {
@@ -47,12 +53,6 @@ public class Letter extends AFD {
 
 			else if (endLetter(code)) {
 				return new Token("VAR", letter);
-			}else if(cha == true && str == false){
-				cha = false;
-				return new Token("CHAR", letter);
-			}else if(cha == false && str == true){
-				str = false;
-				return new Token("STR", letter);
 			}
 		}
 		return null;

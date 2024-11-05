@@ -21,7 +21,7 @@ public class Parser {
         while(token.getTipo()!="EOF"){
             verifica();
             if(token.getTipo() == "EOF"){
-                System.out.println("Sintaticamente correto");
+                System.out.println("\nSintaticamente correto");
             }
         }
     }
@@ -69,7 +69,7 @@ public class Parser {
     }
 
     public boolean iff(){
-        if(matchL("if") && condicao() && matchL("{") && bloco() && matchL("}")){
+        if(matchL("if","if ") && condicao() && matchL("{","{\n") && bloco() && matchL("}",";\n}")){
             return true;
         // if(matchL("if") && condicao() && matchL("{") && (expressao() || iff()) && matchL("}")||verifica()){
         //     if(verifica()){
@@ -120,7 +120,7 @@ public class Parser {
     }
 
     public boolean dete(){
-        if(matchT("RES") && matchT("VAR")){
+        if(matchT("RES",token.getLexema()) && matchT("VAR"," "+token.getLexema()+";\n")){
             return true;
         }
         erro("dete");
@@ -128,7 +128,7 @@ public class Parser {
     }
 
     public boolean atrib(){
-        if(matchT("VAR") && operador() && (matchT("VAR")||matchT("INT")||matchT("FLT"))){
+        if(matchT("VAR",token.getLexema()) && operador() && (matchT("VAR",token.getLexema())||matchT("INT",token.getLexema())||matchT("FLT",token.getLexema())||matchT("STRG",token.getLexema())||matchT("CHAR",token.getLexema())||expressao())){
             return true;
         }
         erro("atrib");
@@ -136,7 +136,7 @@ public class Parser {
     }
 
     public boolean condicao(){
-        if(matchL("(") && valor() && operador() && valor() && matchL(")")){
+        if(matchL("(","(") && valor() && operador() && valor() && matchL(")",")")){
             return true;
         }
         erro("condicao");
@@ -144,7 +144,7 @@ public class Parser {
     }
 
     public boolean valor(){
-        if(matchT("INT") || matchT("FLT") || matchT("VAR")){
+        if(matchT("INT",token.getLexema()) || matchT("FLT",token.getLexema()) || matchT("VAR",token.getLexema())){
             return true;
         }
         erro("valor");
@@ -152,7 +152,7 @@ public class Parser {
     }
 
     public boolean expressao(){
-        if((matchT("INT") || matchT("FLT")) && operador() && (matchT("INT") || matchT("FLT"))){
+        if((matchT("INT",token.getLexema()) || matchT("FLT",token.getLexema())) && operador() && (matchT("INT",token.getLexema()) || matchT("FLT",token.getLexema()))){
             return true;
         }
         erro("expressao");
@@ -160,7 +160,7 @@ public class Parser {
     }
 
     public boolean operador(){
-        if(matchL("+") || matchL("-") || matchL("*") || matchL("/") || matchL("%") || matchL("==") || matchL("<") || matchL(">") || matchL("=")){
+        if(matchL("+",token.getLexema()) || matchL("-",token.getLexema()) || matchL("*",token.getLexema()) || matchL("/",token.getLexema()) || matchL("%",token.getLexema()) || matchL("==",token.getLexema()) || matchL("<",token.getLexema()) || matchL(">",">") || matchL("=",token.getLexema())){
             //Falta %, (, ), :;
             return true;
         }
@@ -184,13 +184,13 @@ public class Parser {
         return false;
     }
 
-    /*private boolean matchL(String lexema, String newcode){
+    private boolean matchL(String lexema, String newcode){
         if(token.getLexema().equals(lexema)){
             print(newcode);
             token = nextToken();
             return true;
         }
-        erro(lexema);
+        //erro("mathcL"+lexema);
         return false;
     }
 
@@ -200,11 +200,11 @@ public class Parser {
             token = nextToken();
             return true;
         }
-        erro(tipo);
+        //erro("matchT"+tipo);
         return false;
-    }*/
+    }
     
     public void print(String code){
-        System.out.println(code);
+        System.out.print(code);
     }
 }
