@@ -11,7 +11,7 @@ public class Main{
 			File arq = new File("teste.txt");
 			Scanner ler = new Scanner(arq);
 			List<Token> tokens = null;
-			String data = "";
+			String data = ler.nextLine();
 			while (ler.hasNextLine()) {
 				data += ler.nextLine();
 				data += '\n';

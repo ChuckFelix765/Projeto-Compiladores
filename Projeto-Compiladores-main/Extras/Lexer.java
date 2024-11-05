@@ -15,6 +15,7 @@ public class Lexer{
 		this.code = new StringCharacterIterator(code);
 		afds = new ArrayList<>();
 		afds.add(new MathOperator());
+		afds.add(new Comentario());
 		afds.add(new Number());
 		afds.add(new Letter());
 	}	
@@ -44,7 +45,7 @@ public class Lexer{
 				}
 			}
 			if (accepted) continue;
-			throw new RuntimeException("Error: Token nao reconhecido: " + code.current());
+			throw new RuntimeException("Error: Token not recognized: " + code.current());
 		}
 		tokens.add(new Token("EOF","$"));
 		return tokens;

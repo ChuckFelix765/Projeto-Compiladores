@@ -12,17 +12,20 @@ public class Parser {
     }
     private void erro(String regra){
         System.out.println("Regra: " + regra);
-        System.out.println("token invalido: " + token.getLexema());
+        System.out.println("token inválido: " + token.getLexema());
         System.exit(0); //encerra o parser
     }
     
     public void main(){
         token = nextToken();
-        while(token.getTipo()!="EOF"){
-            verifica();
+        if(verifica()){
             if(token.getTipo() == "EOF"){
                 System.out.println("Sintaticamente correto");
+            }else{
+                erro("EOF");
             }
+        }else{
+            erro("fim do verifica");
         }
     }
 
@@ -37,29 +40,29 @@ public class Parser {
             if(elsee()) return true;
         }else if(token.getLexema().equals("elif")){
             if(elseif()) return true;
+        }else if(token.getLexema().equals("$")){
+            return true;
         }else if(token.getTipo().equals("VAR")){
             if(atrib()) return true;
-        }else if(token.getTipo().equals("RES")){
-            if(dete()) return true;
         }
         erro("verifica");
         return false;
     }
 
-    // public boolean init(){
-    //     if(bloco() && exis()){
-    //         return true;
-    //     }
-    //     erro("init");
-    //     return false;
-    // }
+    public boolean init(){
+        if(bloco() || exis()){
+            return true;
+        }
+        erro("init");
+        return false;
+    }
 
-    // public boolean exis(){
-    //     if(init()){
-    //         return true;
-    //     }
-    //     return true;
-    // }
+    public boolean exis(){
+        if(init()){
+            return true;
+        }
+        return true;
+    }
 
     public boolean bloco(){
         while(!token.getLexema().equals("}")){
@@ -81,58 +84,44 @@ public class Parser {
     }
 
     public boolean elseif(){
-        if(matchL("elif") && condicao() && matchL("{") && bloco() && matchL("}")){
-            return true;
+        if(matchL("elif") && condicao() && matchL("{") && expressao() && matchL("}")){
+            if(verifica()){
+                return true;
+            }
         }
         erro("elsee");
         return false;
     }
 
     public boolean elsee(){
-        if(matchL("else") && matchL("{") && bloco() && matchL("}")){
-            return true;
+        if(matchL("else") && matchL("{") && expressao() && matchL("}")){
+            if(verifica()){
+                return true;
+            }
         }
         erro("elsee");
         return false;
     }
 
     public boolean whilee(){
-        if(matchL("while") && condicao() && matchL("{") && bloco() && matchL("}")){
-            return true;
+        if(matchL("while") && condicao() && matchL(":") && expressao()){
+            if(verifica()){
+                return true;
+            }
         }
         erro("whilee");
         return false;
     }
 
     public boolean fore(){
-        if(matchL("for") && condicao() && matchL(";") && condicao() && matchL(";") && incr()){
+        if(matchL("for") && matchL("(") && condicao()){
             ;
         }return true;
         //for(id = 0; i< 10; i++)
     }
 
-    public boolean incr(){
-        if((matchT("VAR")||matchT("INT")||matchT("FLT")) && operador() && operador()){
-            return true;
-        }
-        erro("incr");
-        return false;
-    }
-
-    public boolean dete(){
-        if(matchT("RES") && matchT("VAR")){
-            return true;
-        }
-        erro("dete");
-        return false;
-    }
-
     public boolean atrib(){
-        if(matchT("VAR") && operador() && (matchT("VAR")||matchT("INT")||matchT("FLT"))){
-            return true;
-        }
-        erro("atrib");
-        return false;
+        return true;
     }
 
     public boolean condicao(){
@@ -152,7 +141,7 @@ public class Parser {
     }
 
     public boolean expressao(){
-        if((matchT("INT") || matchT("FLT")) && operador() && (matchT("INT") || matchT("FLT"))){
+        if(matchT("VAR") && matchL("=") && (matchT("INT") || matchT("FLT"))){
             return true;
         }
         erro("expressao");
@@ -160,7 +149,7 @@ public class Parser {
     }
 
     public boolean operador(){
-        if(matchL("+") || matchL("-") || matchL("*") || matchL("/") || matchL("%") || matchL("==") || matchL("<") || matchL(">") || matchL("=")){
+        if(matchL("+") || matchL("-") || matchL("*") || matchL("/") || matchL("%") || matchL("==") || matchL("<") || matchL(">")){
             //Falta %, (, ), :;
             return true;
         }

@@ -27,32 +27,6 @@ public class MathOperator extends AFD {
 			case ')':
 				code.next();
 				return new Token("FPAR",")");
-			case '{':
-				code.next();
-				return new Token("ACHA","{");
-			case '}':
-				code.next();
-				return new Token("FCHA","}");
-			case '>':
-				code.next();
-				return new Token("MAIOQ", ">");
-			case '<':
-				code.next();
-				return new Token("MENQ", "<");
-			case '=':
-				code.next();
-				if(code.current() == '='){
-					code.next();
-					return new Token("DIGL", "==");
-				} else{
-					return new Token("IGUL","=");
-				}
-			case ':':
-				code.next();
-				return new Token("DOSP",":");
-			case ',':
-				code.next();
-				return new Token("VIRG",",");
 
 		default:
 			return null;

@@ -4,16 +4,13 @@ import java.util.ArrayList;
 
 
 public class Letter extends AFD {
-
-	boolean cha = false;
-	boolean str = false;
 	@Override
 	public Token evaluate(CharacterIterator code) {
 		//palavras reservadas
 		ArrayList<String> reservadas = new ArrayList<>();
 		reservadas.add("if");
 		reservadas.add("else");
-		reservadas.add("elif");
+		//reservadas.add("else if");
 		reservadas.add("for");
 		reservadas.add("while");
 		reservadas.add("int");
@@ -24,19 +21,7 @@ public class Letter extends AFD {
 		reservadas.add("break");
 		reservadas.add("continue");
 		reservadas.add("boolean");
-		reservadas.add("print");
-
-		if(code.current() == ('\"')){
-			String palavra = "";
-			code.next();
-			while(code.current() != '\"'){
-				System.out.println(code.current());
-				palavra += code.current();
-				code.next();
-			}
-			code.next();
-			return new Token("String", palavra);
-		}
+		reservadas.add("System.out.println");
 
 		if(Character.isLetter(code.current())) {
 			String letter = readLetter(code);
@@ -47,12 +32,6 @@ public class Letter extends AFD {
 
 			else if (endLetter(code)) {
 				return new Token("VAR", letter);
-			}else if(cha == true && str == false){
-				cha = false;
-				return new Token("CHAR", letter);
-			}else if(cha == false && str == true){
-				str = false;
-				return new Token("STR", letter);
 			}
 		}
 		return null;
@@ -63,26 +42,6 @@ public class Letter extends AFD {
 			letter += code.current();
 			code.next();
 		}
-
-		/*if(code.current()=='\''){
-			cha = true;
-			letter += "\'";
-			code.next();
-
-			while(Character.isLetter(code.current())){
-				letter += code.current();
-				code.next();
-			}
-		}else if(code.current()=='\"'){
-			str = true;
-			letter += "\"";
-			code.next();
-
-			while(Character.isLetter(code.current())){
-				letter += code.current();
-				code.next();
-			}
-		}*/
 		return letter;
 	}
 
@@ -96,10 +55,6 @@ public class Letter extends AFD {
 		code.current() == '\n' ||
 		code.current() == '(' ||
 		code.current() == ')' ||
-		code.current() == '>' ||
-		code.current() == '<' ||
-		code.current() == ':' ||
-		code.current() == ',' ||
 		code.current() == CharacterIterator.DONE;
 	}
 }
