@@ -13,6 +13,7 @@ public class Parser {
     public Token nextToken(){
         return (tokens.size() > 0) ? tokens.remove(0) : null; //Operador ternário
     }
+
     private void erro(String regra){
         System.out.println("Regra: " + regra);
         System.out.println("token invalido: " + token.getLexema());
@@ -20,11 +21,13 @@ public class Parser {
     }
     
     public void main(){
+        print("#include <stdio.h>\n\nint main(){\n");
         token = nextToken();
         
-        while(token.getTipo()!="EOF"){
+        while(!token.getTipo().equals("EOF")){
             verifica();
-            if(token.getTipo() == "EOF"){
+            if(token.getTipo().equals("EOF")){
+                tradutor.append("\n}");
                 System.out.println("\nSintaticamente correto");
                 try(FileWriter writer = new FileWriter("Code.c")){
                     writer.write(tradutor.toString());
@@ -37,6 +40,7 @@ public class Parser {
     }
 
     public boolean verifica(){
+        
         if(token.getLexema().equals("importe")){
             if(cabeca()) return true;
         }else if(token.getLexema().equals("funcion")){ //if
@@ -51,16 +55,27 @@ public class Parser {
             if(elsee()) return true;
         }else if(token.getLexema().equals("enton")){ //elif
             if(elseif()) return true;
-        }else if(token.getLexema().equals("escriba")){ //print
+        }else if(token.getLexema().equals("escriba")){ //input
             if(inputt()) return true;
-        }else if(token.getLexema().equals("muestrame")){
+        }else if(token.getLexema().equals("muestrame")){//print
             if(printt()) return true;
+        }else if(token.getLexema().equals("entero")){ //int
+            if(dec_int()) return true;
+        }else if(token.getLexema().equals("flotante")){ //float
+            if(dec_float()) return true;
+        }else if(token.getLexema().equals("palabra")){// string
+            if(dec_string()) return true;
+        }else if(token.getLexema().equals("letra")){ //char
+            if(dec_char()) return true;
         }
-        else if(token.getTipo().equals("VAR")){
-            if(atrib()) return true;
-        }else if(token.getTipo().equals("RES")){
-            if(dete()) return true;
-        }
+            /* 
+            else if(token.getTipo().equals("VAR")){
+                if(atrib()) return true;
+            }else if(token.getTipo().equals("RES")){
+                if(dete()) return true;
+            }
+            */
+
         erro("verifica");
         return false;
     }
@@ -131,7 +146,7 @@ public class Parser {
     }
 
     public boolean inputt(){
-        if(matchL("escriba", "scanf") && matchL("(", "(\"%s\"") && matchT("VAR", ", &"+token.getLexema()) && matchL(")", ");")){
+        if(matchL("escriba", "scanf") && matchL("(", "(\"%s\"") && matchT("VAR", ", &"+token.getLexema()) && matchL(")", ");\n")){
             return true;
         }
         erro("input");
@@ -139,11 +154,34 @@ public class Parser {
     }
 
     public boolean printt(){
-        if(matchL("muestrame", "printf") && matchT("STRG", "()") ){
+        if(matchL("muestrame", "printf") && matchL("(", "(") && matchT("STRG", "\"" + token.getLexema() + "\"") || matchT("VAR", token.getLexema() ) && matchL(")", ");\n")){
             return true;
         }
         erro("print");
         return false;
+    }
+//dec -> declaracao int | float | String | char
+    public boolean dec_int(){
+        if(matchL("entero", "int ") && matchT("VAR", token.getLexema()) && matchL("=", " = ") && matchT("INT", token.getLexema() + ";\n")){
+            return true;
+        }return false;
+    }
+    public boolean dec_float(){
+        if(matchL("flotante", "float ") && matchT("VAR", token.getLexema()) && matchL("=", " = ") && matchT("FLT", token.getLexema() + ";\n")){
+            return true;
+        }return false;
+    }
+
+    public boolean dec_string(){
+        if(matchL("palabra", "char ") && matchT("VAR", token.getLexema() + "[]") && matchL("=", " = ") && matchT("STRG", "\"" + token.getLexema() + "\";\n")){
+            return true;
+        }return false;
+    }
+
+    public boolean dec_char(){
+        if(matchL("letra", "char ") && matchT("VAR", token.getLexema()) && matchL("=", " = ") && matchT("CHAR", token.getLexema() + ";\n")){
+            return true;
+        }return false;
     }
 
     public boolean incr(){

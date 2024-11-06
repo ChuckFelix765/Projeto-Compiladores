@@ -19,7 +19,7 @@ SINTATICO
 • Deve ter ao menos duas estruturas de repetição (while, do . . . while, for); --- OK
 • Deve possibilitar laços encadeados --- OK
 • Os comandos de leitura do teclado (Scanner, scanf, input, etc) e de impressão na tela (print) 
-    devem ser disponibilizados. --- TERMINAR
+    devem ser disponibilizados. --- OK
 • O compilador deve ter mensagens de erros. --- OK
 
 

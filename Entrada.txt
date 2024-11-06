@@ -1,19 +1,6 @@
-importe <spanIO>
-
-funcion entero extra(){
-    entero a
-    entero b
-    si(a>b){
-        a = b
-    }
-}
-
-funcion entero main(){
-    entero c
-    entero d
-    si(c<d){
-        mientras(c<d){
-            c = d
-        }
-    }
-}
+entero buceta = 10
+flotante picapreta = 100.28
+palabra smt = "quero enfiar uma faca no meu rabo"
+letra pau = 'o'
+entero xereca = 69
+muestrame(pica)

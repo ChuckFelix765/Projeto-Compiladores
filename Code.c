@@ -1,18 +1,11 @@
 #include <stdio.h>
 
-entero extra(){
-entero a;
-entero b;
-if (a > b){
-a = b;
-}
-}
-entero main(){
-entero c;
-entero d;
-if (c < d){
-while (c < d){
-c = d;
-}
-}
+int main(){
+int buceta = 10;
+float picapreta = 100.28;
+char smt[] = "quero enfiar uma faca no meu rabo";
+char pau = o;
+int xereca = 69;
+printf(pica);
+
 }
