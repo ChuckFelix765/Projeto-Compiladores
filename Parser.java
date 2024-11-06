@@ -1,6 +1,6 @@
-import java.util.List;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 
 public class Parser {
     List<Token> tokens;
@@ -20,7 +20,6 @@ public class Parser {
     }
     
     public void main(){
-        print("#include <stdio.h>\n\nint main(){\n");
         token = nextToken();
         
         while(token.getTipo()!="EOF"){
@@ -39,7 +38,9 @@ public class Parser {
     }
 
     public boolean verifica(){
-        if(token.getLexema().equals("si")){ //if
+        if(token.getLexema().equals("importe")){
+            if(cabeca()) return true;
+        }else if(token.getLexema().equals("si")){ //if
             if(iff()) return true;
         }else if(token.getLexema().equals("mientras")){ //while
             if(whilee()) return true;
@@ -57,6 +58,14 @@ public class Parser {
             if(dete()) return true;
         }
         erro("verifica");
+        return false;
+    }
+
+    public boolean cabeca(){
+        if(matchL("importe","#include ") && matchL("<","<") && matchL("spanIO","stdio.h") && matchL(">",">\n\nint main(){\n")){
+            return true;
+        }
+        erro("cabeca");
         return false;
     }
 

@@ -24,6 +24,7 @@ public class Letter extends AFD {
 		reservadas.add("mugrilo"); //boolean
 		reservadas.add("escriba"); //input
 		reservadas.add("muestrame"); //print
+		reservadas.add("importe");
 		if(code.current() == ('\"')){
 			String palavra = "";
 			code.next();
