@@ -73,7 +73,7 @@ public class Parser {
     public boolean funcion(){
         if(matchL("funcion") && matchT("RES", token.getLexema() + " ") && matchT("VAR",token.getLexema()) 
         && matchL("(","(") && matchL(")",")") && matchL("{","{\n") && bloco() 
-        && matchL("}","\n}")){
+        && matchL("}","\n}\n")){
             return true;
         }
         erro("funcion");
