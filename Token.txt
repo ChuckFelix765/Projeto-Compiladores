@@ -1,0 +1,5 @@
+< RES, importe >
+< MENQ, < >
+< VAR, spanIO >
+< MAIOQ, > >
+< EOF, $ >
