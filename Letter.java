@@ -25,7 +25,7 @@ public class Letter extends AFD {
 		reservadas.add("escriba"); //input
 		reservadas.add("muestrame"); //print
 		reservadas.add("importe"); //include
-		reservadas.add("funcion");
+		reservadas.add("funcion"); //function
 		if(code.current() == ('\"')){
 			String palavra = "";
 			code.next();

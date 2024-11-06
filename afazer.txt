@@ -8,3 +8,26 @@
 Semântico
 • A cada utilização de uma variável, é necessário verificar se ela já foi declarada. X|O
 • É necessário verificar se é possível realizar as operações, devido aos tipos das variáveis e ao seu escopo. X|O
+
+LEXICO
+• Deve ter, no mínimo, 3 tipos de variáveis --- OK
+• O compilador tem que aceitar números decimais. --- OK
+
+SINTATICO
+• Deve ter a estrutura de controle if . . . else; --- OK
+• Deve possibilitar ifs encadeados --- OK
+• Deve ter ao menos duas estruturas de repetição (while, do . . . while, for); --- OK
+• Deve possibilitar laços encadeados --- OK
+• Os comandos de leitura do teclado (Scanner, scanf, input, etc) e de impressão na tela (print) 
+    devem ser disponibilizados. --- TERMINAR
+• O compilador deve ter mensagens de erros. --- OK
+
+
+SEMANTICO
+
+• É necessário verificar se é possível realizar as operações, devido aos tipos das variáveis e ao seu
+escopo. --- FALTA
+• A parte de expressões envolvendo os operadores matemáticos deve ser realizada de maneira
+correta, respeitando a precedência. --- VERIFICAR
+• As atribuições também devem ser realizadas; --- VER
+• A cada utilização de uma variável, é necessário verificar se ela já foi declarada. --- FALTA

@@ -53,7 +53,10 @@ public class Parser {
             if(elseif()) return true;
         }else if(token.getLexema().equals("escriba")){ //print
             if(inputt()) return true;
-        }else if(token.getTipo().equals("VAR")){
+        }else if(token.getLexema().equals("muestrame")){
+            if(printt()) return true;
+        }
+        else if(token.getTipo().equals("VAR")){
             if(atrib()) return true;
         }else if(token.getTipo().equals("RES")){
             if(dete()) return true;
@@ -132,6 +135,14 @@ public class Parser {
             return true;
         }
         erro("input");
+        return false;
+    }
+
+    public boolean printt(){
+        if(matchL("muestrame", "printf") && matchT("STRG", "()") ){
+            return true;
+        }
+        erro("print");
         return false;
     }
 
