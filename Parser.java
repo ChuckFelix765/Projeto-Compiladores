@@ -25,7 +25,6 @@ public class Parser {
         while(token.getTipo()!="EOF"){
             verifica();
             if(token.getTipo() == "EOF"){
-                print("\n}");
                 System.out.println("\nSintaticamente correto");
                 try(FileWriter writer = new FileWriter("Code.c")){
                     writer.write(tradutor.toString());
@@ -40,6 +39,8 @@ public class Parser {
     public boolean verifica(){
         if(token.getLexema().equals("importe")){
             if(cabeca()) return true;
+        }else if(token.getLexema().equals("funcion")){ //if
+            if(funcion()) return true;
         }else if(token.getLexema().equals("si")){ //if
             if(iff()) return true;
         }else if(token.getLexema().equals("mientras")){ //while
@@ -62,10 +63,20 @@ public class Parser {
     }
 
     public boolean cabeca(){
-        if(matchL("importe","#include ") && matchL("<","<") && matchL("spanIO","stdio.h") && matchL(">",">\n\nint main(){\n")){
+        if(matchL("importe","#include ") && matchL("<","<") && matchL("spanIO","stdio.h") && matchL(">",">\n\n")){
             return true;
         }
         erro("cabeca");
+        return false;
+    }
+
+    public boolean funcion(){
+        if(matchL("funcion") && matchT("RES", token.getLexema() + " ") && matchT("VAR",token.getLexema()) 
+        && matchL("(","(") && matchL(")",")") && matchL("{","{\n") && bloco() 
+        && matchL("}","\n}")){
+            return true;
+        }
+        erro("funcion");
         return false;
     }
 

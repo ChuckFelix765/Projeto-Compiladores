@@ -1,1 +1,16 @@
 importe <spanIO>
+
+funcion entero main(){
+    entero aum
+    entero b
+    entero c
+    si(adois<b){
+        si(c>atres){
+            mientras(aquatr < c){
+                para( i =0; i<10;i++){
+                    acinco = t
+                }
+            }
+        }
+    }
+}

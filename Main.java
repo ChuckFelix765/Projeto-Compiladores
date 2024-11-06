@@ -1,8 +1,8 @@
 //Main.java
-import java.io.IOException;
-import java.util.List;
-import java.io.File;  // Import the File class
-import java.io.FileNotFoundException;  // Import this class to handle errors
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;  // Import the File class
+import java.util.List;  // Import this class to handle errors
 import java.util.Scanner; // Import the Scanner class to read text files
 
 public class Main{
@@ -10,6 +10,7 @@ public class Main{
 		try{
 			File arq = new File("teste.txt");
 			Scanner ler = new Scanner(arq);
+			Scanner input = new Scanner(System.in);
 			List<Token> tokens = null;
 			String data = "";
 			while (ler.hasNextLine()) {
