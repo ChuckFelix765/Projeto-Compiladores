@@ -1,0 +1,19 @@
+importe <spanIO>
+
+funcion entero extra(){
+    entero a
+    entero b
+    si(a>b){
+        a = b
+    }
+}
+
+funcion entero main(){
+    entero c
+    entero d
+    si(c<d){
+        mientras(c<d){
+            c = d
+        }
+    }
+}
