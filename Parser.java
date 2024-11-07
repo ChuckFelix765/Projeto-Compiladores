@@ -68,7 +68,7 @@ public class Parser {
             if(dec_string()) return true;
         }else if(token.getLexema().equals("letra")){ //char
             if(dec_char()) return true;
-        }else if(token.getLexema().equals("retorna")){
+        }else if(token.getLexema().equals("retorna")){ // return
             if(retorna()) return true;
         }
             /* 
