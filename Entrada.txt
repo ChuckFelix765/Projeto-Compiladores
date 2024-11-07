@@ -1,35 +1,17 @@
-entero meupau = 10
-entero seupau = 20
-flotante pau = 10.10
-flotante seu = 20.10
-palabra tes = "parabens"
-palabra resa = "chupa otario"
+importe <spanIO>
 
-muestrame("tienes una xereca")
-escriba(xereca)
+funcion entero main(){
+    entero a
+    entero b
+    entero i
 
-si(meupau > seupau){
-muestrame(res)
-si(xereca < 1){
-muestrame("perdon madame")
-}
+    muestrame("Digite o valor de a = ")
+    escriba(entero a)
 
-}enton(seupau > meupau){
-    muestrame(res)
-}sino{
-    muestrame("Ponha o tamanho da sua peca")
-    escriba(seupau)
-}
-mientras(1 == 1){
-    mientras(xereca == 1){
-        mientras(meupau == 10){
-            si(meupau == 0){
-                para(uno = 0 ; uno > 20 ; uno++){
-                    retorna paraguai
-                }
-            }sino{
-                retorna verdad
-            }
-        }
+    muestrame("Digite o valor de b = ")
+    escriba(entero b)
+    
+    para(i = 0; i< 10; i++){
+        muestrame(entero a)
     }
 }

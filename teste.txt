@@ -1,16 +1,43 @@
 importe <spanIO>
 
 funcion entero main(){
-    entero aum
-    entero b
-    entero c
-    si(adois<b){
-        si(c>atres){
-            mientras(aquatr < c){
-                para( i =0; i<10;i++){
-                    acinco = t
+
+entero meupau = 10
+entero seupau = 20
+flotante pau = 10.10
+flotante seu = 20.10
+palabra tes = "parabens"
+palabra resa = "chupa otario"
+palabra xereca = "si"
+palabra res = "sorry"
+
+
+muestrame("tienes una xereca")
+escriba(xereca)
+
+si(meupau > seupau){
+muestrame(res)
+si(xereca < 1){
+muestrame("perdon madame")
+}
+
+}enton(seupau > meupau){
+    muestrame(res)
+}sino{
+    muestrame("Ponha o tamanho da sua peca")
+    escriba(seupau)
+}
+mientras(1 == 1){
+    mientras(xereca == 1){
+        mientras(meupau == 10){
+            si(meupau == 0){
+                para(uno = 0 ; uno > 20 ; uno++){
+                    retorna paraguai
                 }
+            }sino{
+                retorna verdad
             }
         }
     }
+}
 }

@@ -21,13 +21,13 @@ public class Parser {
     }
     
     public void main(){
-        print("#include <stdio.h>\n\nint main(){\n");
+        //print("#include <stdio.h>\n\nint main(){\n");
         token = nextToken();
         
         while(!token.getTipo().equals("EOF")){
             verifica();
             if(token.getTipo().equals("EOF")){
-                tradutor.append("\n}");
+                //tradutor.append("\n}");
                 System.out.println("\nSintaticamente correto");
                 try(FileWriter writer = new FileWriter("Code.c")){
                     writer.write(tradutor.toString());
@@ -84,7 +84,8 @@ public class Parser {
     }
 
     public boolean cabeca(){
-        if(matchL("importe","#include ") && matchL("<","<") && matchL("spanIO","stdio.h") && matchL(">",">\n\n")){
+        if(matchL("importe","#include ") && matchL("<","<") 
+        && matchL("spanIO","stdio.h") && matchL(">",">\n\n")){
             return true;
         }
         erro("cabeca");
@@ -92,12 +93,31 @@ public class Parser {
     }
 
     public boolean funcion(){
-        if(matchL("funcion") && matchT("RES", token.getLexema() + " ") && matchT("VAR",token.getLexema()) 
-        && matchL("(","(") && matchL(")",")") && matchL("{","{\n") && bloco() 
-        && matchL("}","\n}\n")){
+        if(matchL("funcion") && tipo() 
+        && matchT("VAR",token.getLexema()) && matchL("(","(") 
+        && matchL(")",")") && matchL("{","{\n") 
+        && bloco() && matchL("}","\n}\n")){
             return true;
         }
         erro("funcion");
+        return false;
+    }
+
+    public boolean tipo(){
+        if(matchL("entero","int ") || matchL("flotante","float ")
+        || matchL("palabra","string ") || matchL("letra","char ")){
+            return true;
+        }
+        erro("tipo");
+        return false;
+    }
+
+    public boolean tipos(){
+        if(matchL("entero","%d") || matchL("flotante","%f")
+        || matchL("palabra","%s") || matchL("letra","%c")){
+            return true;
+        }
+        erro("tipos");
         return false;
     }
 
@@ -109,7 +129,10 @@ public class Parser {
     }
 
     public boolean iff(){
-        if(matchL("si","if ") && matchL("(","(") &&  condicao() && matchL(")",")") && matchL("{","{\n") && bloco() && matchL("}","\n}")){
+        if(matchL("si","if ") && matchL("(","(") 
+        && condicao() && matchL(")",")") 
+        && matchL("{","{\n") && bloco() 
+        && matchL("}","\n}")){
             return true;
         }
         erro("iff");
@@ -117,7 +140,10 @@ public class Parser {
     }
 
     public boolean elseif(){
-        if(matchL("enton","elif ") && matchL("(","(") && condicao() && matchL(")",")") && matchL("{","{\n") && bloco() && matchL("}","\n}")){
+        if(matchL("enton","elif ") && matchL("(","(") 
+        && condicao() && matchL(")",")") 
+        && matchL("{","{\n") && bloco() 
+        && matchL("}","\n}")){
             return true;
         }
         erro("elsif");
@@ -125,7 +151,8 @@ public class Parser {
     }
 
     public boolean elsee(){
-        if(matchL("sino","else ") && matchL("{","{\n") && bloco() && matchL("}","\n}")){
+        if(matchL("sino","else ") && matchL("{","{\n") 
+        && bloco() && matchL("}","\n}")){
             return true;
         }
         erro("elsee");
@@ -133,7 +160,10 @@ public class Parser {
     }
 
     public boolean whilee(){
-        if(matchL("mientras","while ") && matchL("(","(") && condicao() && matchL(")",")") && matchL("{","{\n") && bloco() && matchL("}","\n}")){
+        if(matchL("mientras","while ") && matchL("(","(") 
+        && condicao() && matchL(")",")") 
+        && matchL("{","{\n") && bloco() 
+        && matchL("}","\n}")){
             return true;
         }
         erro("whilee");
@@ -141,7 +171,12 @@ public class Parser {
     }
 
     public boolean fore(){
-        if(matchL("para","for ") && matchL("(","(") && atrib() && matchL(";") && condicao() && matchL(";") && incr() && matchL(")",")") && matchL("{","{\n") && bloco() && matchL("}","\n}")){
+        if(matchL("para","for ") && matchL("(","(") 
+        && atrib() && matchL(";") 
+        && condicao() && matchL(";") 
+        && incr() && matchL(")",")") 
+        && matchL("{","{\n") && bloco() 
+        && matchL("}","\n}")){
             return true;
         }
         erro("fore");
@@ -149,23 +184,46 @@ public class Parser {
     }
 
     public boolean inputt(){
-        if(matchL("escriba", "scanf") && matchL("(", "(\"%s\"") && matchT("VAR", ", &"+token.getLexema()) && matchL(")", ");\n")){
+        if(matchL("escriba", "scanf") && matchL("(", "(\"") 
+        && tipos() && matchT("VAR", "\", &"+token.getLexema()) 
+        && matchL(")", ");\n")){
             return true;
         }
-        erro("input");
+        erro("inputt");
         return false;
     }
 
+    // public boolean inputt(){
+    //     if(matchL("escriba", "scanf") && matchL("(", "(\"%s\"") && matchT("VAR", ", &"+token.getLexema()) && matchL(")", ");\n")){
+    //         return true;
+    //     }
+    //     erro("input");
+    //     return false;
+    // }
+
     public boolean printt(){
-        if(matchL("muestrame", "printf") && matchL("(", "(") && (matchT("STRG", "\"" + token.getLexema() + "\"") || matchT("VAR", token.getLexema())) && matchL(")", ");\n")){
+        if(matchL("muestrame", "printf") && matchL("(", "(\"") 
+        && (matchT("STRG", token.getLexema() + "\"") || (tipos() 
+        && matchT("VAR", "\\n\"," + token.getLexema()))) && matchL(")", ");\n")){
             return true;
         }
         erro("print");
         return false;
     }
 
+    // public boolean printt(){
+    //     if(matchL("muestrame", "printf") && matchL("(", "(") 
+    //     && (matchT("STRG", "\"" + token.getLexema() + "\"") || matchT("VAR", token.getLexema())) 
+    //     && matchL(")", ");\n")){
+    //         return true;
+    //     }
+    //     erro("print");
+    //     return false;
+    // }
+
     public boolean retorna(){
-        if(matchL("retorna", "return ") && matchL("verdad", "true;\n") || matchL("paraguai", "false;\n")){
+        if(matchL("retorna", "return ") && matchL("verdad", "true;\n") 
+        || matchL("paraguai", "false;\n")){
             return true;
         }
         erro("return");
@@ -173,7 +231,7 @@ public class Parser {
     }
 //dec -> declaracao int | float | String | char
     public boolean dec_int(){
-        if(matchL("entero", "int ") && matchT("VAR", token.getLexema()) && (matchL("=", " = ") && matchT("INT", token.getLexema() + ";\n"))){
+        if(dete() || (matchL("entero", "int ") && matchT("VAR", token.getLexema()) && (matchL("=", " = ") && matchT("INT", token.getLexema() + ";\n")))){
             return true;
         }return false;
     }
@@ -184,13 +242,22 @@ public class Parser {
     }
 
     public boolean dec_string(){
-        if(matchL("palabra", "char ") && matchT("VAR", token.getLexema() + "[]") && matchL("=", " = ") && matchT("STRG", "\"" + token.getLexema() + "\";\n")){
+        if(matchL("palabra", "char ") && matchT("VAR", token.getLexema() + "[]") 
+        && matchL("=", " = ") && matchT("STRG", "\"" + token.getLexema() + "\";\n")){
             return true;
         }return false;
     }
 
+    // public boolean dec_string(){
+    //     if(matchL("palabra", "char ") && matchT("VAR", token.getLexema() + "[]") && matchL("=", " = ") && matchT("STRG", "\"" + token.getLexema() + "\";\n")){
+    //         return true;
+    //     }return false;
+    // }
+
+    //String nome
+
     public boolean dec_char(){
-        if(matchL("letra", "char ") && matchT("VAR", token.getLexema()) && matchL("=", " = ") && matchT("CHAR", token.getLexema() + ";\n")){
+        if((matchL("letra", "char ") && matchT("VAR", token.getLexema()) && matchL("=", " = ") && matchT("CHAR", token.getLexema() + ";\n"))){
             return true;
         }return false;
     }
@@ -204,7 +271,7 @@ public class Parser {
     }
 
     public boolean dete(){
-        if(matchT("RES",token.getLexema()) && matchT("VAR"," "+token.getLexema()+";\n")){
+        if(matchT("RES","int ") && matchT("VAR"," "+token.getLexema()+";\n")){
             return true;
         }
         erro("dete");
@@ -212,8 +279,10 @@ public class Parser {
     }
 
     public boolean atrib(){
-        if(matchT("VAR",token.getLexema()) && operador() && (matchT("VAR",token.getLexema()+";")||matchT("INT",token.getLexema()+";")||matchT("FLT",token.getLexema()+";")
-        ||matchT("STRG",token.getLexema()+";")||matchT("CHAR",token.getLexema()+";")||expressao())){
+        if(matchT("VAR",token.getLexema()) && operador() 
+        && (matchT("VAR",token.getLexema()+";")||matchT("INT",token.getLexema()+";")
+        ||matchT("FLT",token.getLexema()+";")||matchT("STRG",token.getLexema()+";")
+        ||matchT("CHAR",token.getLexema()+";")||expressao())){
             return true;
         }
         erro("atrib");
@@ -229,7 +298,8 @@ public class Parser {
     }
 
     public boolean valor(){
-        if(matchT("INT",token.getLexema()) || matchT("FLT",token.getLexema()) || matchT("VAR",token.getLexema())){
+        if(matchT("INT",token.getLexema()) || matchT("FLT",token.getLexema()) 
+        || matchT("VAR",token.getLexema())){
             return true;
         }
         erro("valor");
@@ -237,7 +307,9 @@ public class Parser {
     }
 
     public boolean expressao(){
-        if((matchT("INT",token.getLexema()) || matchT("FLT",token.getLexema())) && operador() && (matchT("INT",token.getLexema()) || matchT("FLT",token.getLexema()))){
+        if((matchT("INT",token.getLexema()) || matchT("FLT",token.getLexema())) 
+        && operador() && (matchT("INT",token.getLexema()) 
+        || matchT("FLT",token.getLexema()))){
             return true;
         }
         erro("expressao");
@@ -245,9 +317,11 @@ public class Parser {
     }
 
     public boolean operador(){
-        if(matchL("+"," + ") || matchL("-"," - ") || matchL("*"," * ") || matchL("/"," / ")
-         || matchL("%"," % ") || matchL("=="," == ") || matchL("<"," < ") || matchL(">"," > ") || 
-         matchL("="," = ")){
+        if(matchL("+"," + ") || matchL("-"," - ") 
+        || matchL("*"," * ") || matchL("/"," / ")
+        || matchL("%"," % ") || matchL("=="," == ") 
+        || matchL("<"," < ") || matchL(">"," > ") 
+        || matchL("="," = ")){
             //Falta  (, ), :;
             return true;
         }

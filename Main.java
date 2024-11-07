@@ -23,13 +23,13 @@ public class Main{
 			ler.close();
 			Lexer lexer = new Lexer(data);
 			tokens = lexer.getTokens();
-			System.out.print("Deseja observar os Tokens?\n1 - Sim\n2 - Nao\n\nDigite o que deseja: ");
-			int a = input.nextInt();
-			if(a == 1){
+			// System.out.print("Deseja observar os Tokens?\n1 - Sim\n2 - Nao\n\nDigite o que deseja: ");
+			// int a = input.nextInt();
+			//if(a == 1){
 				for(Token token : tokens){
 					arqt.write(token.toString()+"\n");
 				}
-			}
+			//}
 			arqt.close();
 			input.close();
 			Parser parser = new Parser(tokens);
