@@ -68,7 +68,7 @@ public class Parser {
             if(dec_string()) return true;
         }else if(token.getLexema().equals("letra")){ //char
             if(dec_char()) return true;
-        }else if(token.getLexema().equals("retorna")){ // return
+        }else if(token.getLexema().equals("retorna")){
             if(retorna()) return true;
         }
             /* 
@@ -173,7 +173,7 @@ public class Parser {
     public boolean fore(){
         if(matchL("para","for ") && matchL("(","(") 
         && atrib() && matchL(";") 
-        && condicao() && matchL(";") 
+        && condicao() && matchL(";",";") 
         && incr() && matchL(")",")") 
         && matchL("{","{\n") && bloco() 
         && matchL("}","\n}")){
@@ -263,7 +263,7 @@ public class Parser {
     }
 
     public boolean incr(){
-        if((matchT("VAR")||matchT("INT")||matchT("FLT")) && operador() && operador()){
+        if(matchT("VAR",token.getLexema()) && operador() && operador()){
             return true;
         }
         erro("incr");
@@ -271,7 +271,7 @@ public class Parser {
     }
 
     public boolean dete(){
-        if(matchT("RES","int ") && matchT("VAR"," "+token.getLexema()+";\n")){
+        if(matchL("entero","int ") && matchT("VAR"," "+token.getLexema()+";\n")){
             return true;
         }
         erro("dete");
@@ -317,11 +317,11 @@ public class Parser {
     }
 
     public boolean operador(){
-        if(matchL("+"," + ") || matchL("-"," - ") 
-        || matchL("*"," * ") || matchL("/"," / ")
-        || matchL("%"," % ") || matchL("=="," == ") 
-        || matchL("<"," < ") || matchL(">"," > ") 
-        || matchL("="," = ")){
+        if(matchL("+","+") || matchL("-","-") 
+        || matchL("*","*") || matchL("/","/")
+        || matchL("%","%") || matchL("==","==") 
+        || matchL("<","<") || matchL(">",">") 
+        || matchL("=","=")){
             //Falta  (, ), :;
             return true;
         }
