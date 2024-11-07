@@ -38,18 +38,19 @@ public class Main{
 
 			input.close();
 			switch (selecao) {
-				case 1 -> System.out.println("Python");
-                        //Parser parser = new ParserPy(tokens);
-                        //parser.main();
+				case 1 -> {	System.out.println("Python");
+                        	ParserPy parser = new ParserPy(tokens);
+                        	parser.main();
+						}	
 				case 2 -> {
-                                    System.out.println("C");
-                                    Parser parser = new Parser(tokens);
-                                    parser.main();
+							System.out.println("C");
+							Parser parser = new Parser(tokens);
+							parser.main();
                         }
 				default -> {
-                                    System.out.println("Selecao invalida");
-                                    return;
-                                    //throw new AssertionError();
+							System.out.println("Selecao invalida");
+							return;
+							//throw new AssertionError();
                         }
 					//throw new AssertionError();
 			}

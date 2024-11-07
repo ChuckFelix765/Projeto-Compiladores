@@ -27,7 +27,7 @@ public class Parser {
         while(!token.getTipo().equals("EOF")){
             verifica();
             if(token.getTipo().equals("EOF")){
-                //tradutor.append("\n}");
+
                 System.out.println("\nSintaticamente correto");
                 try(FileWriter writer = new FileWriter("Code.c")){
                     writer.write(tradutor.toString());

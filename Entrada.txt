@@ -1,17 +1,6 @@
-importe <spanIO>
-
-funcion entero main(){
-    entero a
-    entero b
-    entero i
-
-    muestrame("Digite o valor de a = ")
-    escriba(entero a)
-
-    muestrame("Digite o valor de b = ")
-    escriba(entero b)
-    
-    para(i = 0; i< 10; i++){
-        muestrame(entero a)
+si(x > 0){
+    si(x > 5){
+        flotante x = 12.0
     }
+    entero a
 }

@@ -3,7 +3,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class ParserPy {
-    StringBuilder tabs = new StringBuilder();
+    String tabs = "";
     List<Token> tokens;
     Token token;
     StringBuilder tradutor = new StringBuilder();
@@ -124,20 +124,20 @@ public class ParserPy {
 
     public boolean bloco(){
         while(!token.getLexema().equals("}")){
-            tabs.append("\t");
+            tabs = tabs + "\t";
             verifica();
         }
-        tabs.deleteCharAt(0);
-        tabs.deleteCharAt(0);
+        tabs = tabs.replaceFirst("\t", "");
+        //tabs.deleteCharAt(0);
         return true;
     }
 
     public boolean iff(){
         //if x > 0: 
         //  a = 0
-        if(matchL("si","if ") && matchL("("," ") 
-        && condicao() && matchL(")",":") 
-        && matchL("{","\n" + tabs) && bloco() 
+        if(matchL("si",tabs +"if ") && matchL("("," ") 
+        && condicao() && matchL(")",":\n") 
+        && matchL("{","\t") && bloco() 
         && matchL("}","\n")){
             return true;
         }
@@ -165,15 +165,10 @@ public class ParserPy {
         return false;
     }
 
-    public void adicionaTab(){
-
-    }
-
-
     public boolean whilee(){
         if(matchL("mientras","while ") && matchL("(") 
         && condicao() && matchL(")",":\n") 
-        && matchL("{", adicionaTab()) && bloco() 
+        && matchL("{", ""+tabs) && bloco() 
         && matchL("}","\n}")){
             return true;
         }
@@ -247,7 +242,7 @@ public class ParserPy {
         }return false;
     }
     public boolean dec_float(){
-        if(matchL("flotante", "float ") && matchT("VAR", token.getLexema()) && (matchL("=", " = ") && matchT("FLT", token.getLexema() + ";\n"))){
+        if(matchL("flotante", tabs + "float ") && matchT("VAR", token.getLexema()) && (matchL("=", " = ") && matchT("FLT", token.getLexema() + ";\n"))){
             return true;
         }return false;
     }
