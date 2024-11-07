@@ -40,8 +40,9 @@ public class Parser {
     }
 
     public boolean verifica(){
-        
-        if(token.getLexema().equals("importe")){
+        if(matchT("COMT")){
+            return true;
+        }else if(token.getLexema().equals("importe")){
             if(cabeca()) return true;
         }else if(token.getLexema().equals("funcion")){ //if
             if(funcion()) return true;
@@ -67,6 +68,8 @@ public class Parser {
             if(dec_string()) return true;
         }else if(token.getLexema().equals("letra")){ //char
             if(dec_char()) return true;
+        }else if(token.getLexema().equals("retorna")){
+            if(retorna()) return true;
         }
             /* 
             else if(token.getTipo().equals("VAR")){
@@ -154,20 +157,28 @@ public class Parser {
     }
 
     public boolean printt(){
-        if(matchL("muestrame", "printf") && matchL("(", "(") && matchT("STRG", "\"" + token.getLexema() + "\"") || matchT("VAR", token.getLexema() ) && matchL(")", ");\n")){
+        if(matchL("muestrame", "printf") && matchL("(", "(") && (matchT("STRG", "\"" + token.getLexema() + "\"") || matchT("VAR", token.getLexema())) && matchL(")", ");\n")){
             return true;
         }
         erro("print");
         return false;
     }
+
+    public boolean retorna(){
+        if(matchL("retorna", "return ") && matchL("verdad", "true;\n") || matchL("paraguai", "false;\n")){
+            return true;
+        }
+        erro("return");
+        return false;
+    }
 //dec -> declaracao int | float | String | char
     public boolean dec_int(){
-        if(matchL("entero", "int ") && matchT("VAR", token.getLexema()) && matchL("=", " = ") && matchT("INT", token.getLexema() + ";\n")){
+        if(matchL("entero", "int ") && matchT("VAR", token.getLexema()) && (matchL("=", " = ") && matchT("INT", token.getLexema() + ";\n"))){
             return true;
         }return false;
     }
     public boolean dec_float(){
-        if(matchL("flotante", "float ") && matchT("VAR", token.getLexema()) && matchL("=", " = ") && matchT("FLT", token.getLexema() + ";\n")){
+        if(matchL("flotante", "float ") && matchT("VAR", token.getLexema()) && (matchL("=", " = ") && matchT("FLT", token.getLexema() + ";\n"))){
             return true;
         }return false;
     }

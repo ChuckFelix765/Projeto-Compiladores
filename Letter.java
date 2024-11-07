@@ -22,6 +22,8 @@ public class Letter extends AFD {
 		reservadas.add("rompe"); //break
 		reservadas.add("continua"); //continue
 		reservadas.add("mugrilo"); //boolean
+		reservadas.add("verdad"); //true
+		reservadas.add("paraguai"); //false
 		reservadas.add("escriba"); //input
 		reservadas.add("muestrame"); //print
 		reservadas.add("importe"); //include
