@@ -31,9 +31,28 @@ public class Main{
 				}
 			//}
 			arqt.close();
+
+
+			System.out.println("Selecione a liguagem para qual deseja traduzir:\n 1 - Python \n 2 - C");
+			int selecao = input.nextInt();
+
 			input.close();
-			Parser parser = new Parser(tokens);
-        	parser.main();
+			switch (selecao) {
+				case 1 -> System.out.println("Python");
+                        //Parser parser = new ParserPy(tokens);
+                        //parser.main();
+				case 2 -> {
+                                    System.out.println("C");
+                                    Parser parser = new Parser(tokens);
+                                    parser.main();
+                        }
+				default -> {
+                                    System.out.println("Selecao invalida");
+                                    return;
+                                    //throw new AssertionError();
+                        }
+					//throw new AssertionError();
+			}
 		}catch(FileNotFoundException e){
 			System.out.println("Arquivo nao encontrado");
       		e.printStackTrace();
