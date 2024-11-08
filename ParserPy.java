@@ -94,9 +94,9 @@ public class ParserPy {
     }
 
     public boolean funcion(){
-        if(matchL("funcion", "def ") && tipo() 
-        && matchT("VAR",token.getLexema()) && matchL("(","(") 
-        && matchL(")",")") && matchL("{",":\n") 
+        if(matchL("funcion", tabs + "def ") && tipo() 
+        && matchT("VAR",token.getLexema()) && matchL("(") 
+        && matchL(")") && matchL("{",tabs + ":\n") 
         && bloco() && matchL("}","\n\n")){
             return true;
         }
@@ -105,8 +105,8 @@ public class ParserPy {
     }
 
     public boolean tipo(){
-        if(matchL("entero","int ") || matchL("flotante","float ")
-        || matchL("palabra","string ") || matchL("letra","char ")){
+        if(matchL("entero",tabs + "int ") || matchL("flotante",tabs + "float ")
+        || matchL("palabra",tabs + "string ") || matchL("letra",tabs + "char ")){
             return true;
         }
         erro("tipo");
@@ -121,6 +121,14 @@ public class ParserPy {
         erro("tipos");
         return false;
     }
+    public boolean tipos_input(){
+        if(matchL("entero") || matchL("flotante")
+        || matchL("palabra") || matchL("letra")){
+            return true;
+        }
+        erro("tipos");
+        return false;
+    }
 
     public boolean bloco(){
         while(!token.getLexema().equals("}")){
@@ -128,16 +136,16 @@ public class ParserPy {
             verifica();
         }
         tabs = tabs.replaceFirst("\t", "");
-        //tabs.deleteCharAt(0);
+
         return true;
     }
 
     public boolean iff(){
         //if x > 0: 
         //  a = 0
-        if(matchL("si",tabs +"if ") && matchL("("," ") 
+        if(matchL("si",tabs + "if ") && matchL("("," ") 
         && condicao() && matchL(")",":\n") 
-        && matchL("{","\t") && bloco() 
+        && matchL("{", tabs) && bloco() 
         && matchL("}","\n")){
             return true;
         }
@@ -146,10 +154,10 @@ public class ParserPy {
     }
 
     public boolean elseif(){
-        if(matchL("enton","elif ") && matchL("(","(") 
-        && condicao() && matchL(")",")") 
-        && matchL("{","{\n") && bloco() 
-        && matchL("}","\n}")){
+        if(matchL("enton",tabs + "elif ") && matchL("(") 
+        && condicao() && matchL(")") 
+        && matchL("{",":\n" + tabs) && bloco() 
+        && matchL("}","\n")){
             return true;
         }
         erro("elsif");
@@ -157,8 +165,8 @@ public class ParserPy {
     }
 
     public boolean elsee(){
-        if(matchL("sino","else ") && matchL("{","{\n") 
-        && bloco() && matchL("}","\n}")){
+        if(matchL("sino",tabs + "else ") && matchL("{",":\n") 
+        && bloco() && matchL("}","\n")){
             return true;
         }
         erro("elsee");
@@ -166,10 +174,10 @@ public class ParserPy {
     }
 
     public boolean whilee(){
-        if(matchL("mientras","while ") && matchL("(") 
+        if(matchL("mientras",tabs + "while ") && matchL("(") 
         && condicao() && matchL(")",":\n") 
-        && matchL("{", ""+tabs) && bloco() 
-        && matchL("}","\n}")){
+        && matchL("{", tabs) && bloco() 
+        && matchL("}","\n")){
             return true;
         }
         erro("whilee");
@@ -177,7 +185,7 @@ public class ParserPy {
     }
 
     public boolean fore(){
-        if(matchL("para","for ") && matchL("(","(") 
+        if(matchL("para",tabs + "for ") && matchL("(","(") 
         && atrib() && matchL(";") 
         && condicao() && matchL(";") 
         && incr() && matchL(")",")") 
@@ -190,80 +198,68 @@ public class ParserPy {
     }
 
     public boolean inputt(){
-        if(matchL("escriba", "scanf") && matchL("(", "(\"") 
-        && tipos() && matchT("VAR", "\", &"+token.getLexema()) 
-        && matchL(")", ");\n")){
-            return true;
+        StringBuilder entra = new StringBuilder();
+
+        if(matchL("escriba", tabs)){
+            entra.append("input()");
+             if(matchL("(") ){
+                if(tipos_input()){
+                    entra.insert(0, token.getLexema() + " = ");
+                    if(matchT("VAR")){
+                        if(matchL(")", entra + " \n")){
+                            tabs = tabs.replaceFirst("\t", "");
+
+                            return true;
+                        }
+                    }
+                }
+            }
+            
         }
         erro("inputt");
         return false;
     }
 
-    // public boolean inputt(){
-    //     if(matchL("escriba", "scanf") && matchL("(", "(\"%s\"") && matchT("VAR", ", &"+token.getLexema()) && matchL(")", ");\n")){
-    //         return true;
-    //     }
-    //     erro("input");
-    //     return false;
-    // }
-
     public boolean printt(){
-        if(matchL("muestrame", "printf") && matchL("(", "(\"") 
+        if(matchL("muestrame", tabs + "print") && matchL("(", "(\"") 
         && (matchT("STRG", token.getLexema() + "\"") || (tipos() 
-        && matchT("VAR", "\\n\"," + token.getLexema()))) && matchL(")", ");\n")){
+        && matchT("VAR", "\\n\" %" + token.getLexema()))) && matchL(")", ")\n")){
             return true;
         }
         erro("print");
         return false;
     }
 
-    // public boolean printt(){
-    //     if(matchL("muestrame", "printf") && matchL("(", "(") 
-    //     && (matchT("STRG", "\"" + token.getLexema() + "\"") || matchT("VAR", token.getLexema())) 
-    //     && matchL(")", ");\n")){
-    //         return true;
-    //     }
-    //     erro("print");
-    //     return false;
-    // }
-
     public boolean retorna(){
-        if(matchL("retorna", "return ") && matchL("verdad", "true;\n") 
-        || matchL("paraguai", "false;\n")){
+        if(matchL("retorna", tabs + "return ") && matchL("verdad", "true\n") 
+        || matchL("paraguai", "false\n")){
             return true;
         }
         erro("return");
         return false;
     }
+
 //dec -> declaracao int | float | String | char
     public boolean dec_int(){
-        if(dete() || (matchL("entero", "int ") && matchT("VAR", token.getLexema()) && (matchL("=", " = ") && matchT("INT", token.getLexema() + ";\n")))){
+        if((matchL("entero", tabs + "int ") && matchT("VAR", token.getLexema()) && (matchL("=", " = ") && matchT("INT", token.getLexema() + "\n")))){
             return true;
         }return false;
     }
     public boolean dec_float(){
-        if(matchL("flotante", tabs + "float ") && matchT("VAR", token.getLexema()) && (matchL("=", " = ") && matchT("FLT", token.getLexema() + ";\n"))){
+        if(matchL("flotante", tabs + "float ") && matchT("VAR", token.getLexema()) && (matchL("=", " = ") && matchT("FLT", token.getLexema() + "\n"))){
             return true;
         }return false;
     }
 
     public boolean dec_string(){
-        if(matchL("palabra", "char ") && matchT("VAR", token.getLexema() + "[]") 
-        && matchL("=", " = ") && matchT("STRG", "\"" + token.getLexema() + "\";\n")){
+        if(matchL("palabra", tabs + "str ") && matchT("VAR", token.getLexema()) 
+        && matchL("=", " = ") && matchT("STRG", "\"" + token.getLexema() + "\"\n")){
             return true;
         }return false;
     }
 
-    // public boolean dec_string(){
-    //     if(matchL("palabra", "char ") && matchT("VAR", token.getLexema() + "[]") && matchL("=", " = ") && matchT("STRG", "\"" + token.getLexema() + "\";\n")){
-    //         return true;
-    //     }return false;
-    // }
-
-    //String nome
-
     public boolean dec_char(){
-        if((matchL("letra", "char ") && matchT("VAR", token.getLexema()) && matchL("=", " = ") && matchT("CHAR", token.getLexema() + ";\n"))){
+        if((matchL("letra", tabs + "char ") && matchT("VAR", token.getLexema()) && matchL("=", " = ") && matchT("CHAR", "\'" + token.getLexema() + "\'\n"))){
             return true;
         }return false;
     }

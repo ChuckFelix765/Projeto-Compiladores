@@ -1,6 +1,8 @@
-si(x > 0){
-    si(x > 5){
-        flotante x = 12.0
-    }
-    entero a
+si(x > 2){
+    entero x = 0
+}enton(x < 1){
+    muestrame( flotante y)
+}sino{
+    escriba(palabra z)
+    escriba(entero f)
 }
