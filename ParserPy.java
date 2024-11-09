@@ -185,7 +185,6 @@ public class ParserPy {
     //para(i = 0 ; i<10 ; i++)
     public boolean fore(){
         if(matchL("para",tabs + "for ") && matchL("(")) {
-            String variavel = token.getLexema();
             if(matchT("VAR",token.getLexema()) && matchL("=")){
                 String valor_inicio = token.getLexema(); 
                 if(matchT("INT") && matchL(";") && matchT("VAR") && matchL("<") || matchL(">")){
