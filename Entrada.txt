@@ -1,8 +1,14 @@
-si(x > 2){
-    entero x = 0
-}enton(x < 1){
-    muestrame( flotante y)
-}sino{
-    escriba(palabra z)
-    escriba(entero f)
+para(i = 1 ; i < 10 ; i++){
+    mientras(x > 10){
+        si(mipene < tupene){
+            retorna paraguai
+        }enton(mipene == tupene){
+            muestrame(entero mipene)
+            muestrame(entero tupene)
+            entero mipene = 100
+        }sino{
+            retorna verdad
+        }
+        
+    }
 }

@@ -9,6 +9,7 @@ import java.util.Scanner; // Import the Scanner class to read text files
 public class Main{
 
 	public static void main(String[] args) throws IOException {
+
 		try{
 			File arq = new File("Entrada.txt");
 			FileWriter arqt = new FileWriter("Token.txt");

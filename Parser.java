@@ -172,7 +172,8 @@ public class Parser {
 
     public boolean fore(){
         if(matchL("para","for ") && matchL("(","(") 
-        && atrib() && matchL(";") 
+        && matchT("VAR", token.getLexema()) && matchL("=", " = ")
+        && matchT("INT", token.getLexema()) && matchL(";", " ; ") 
         && condicao() && matchL(";",";") 
         && incr() && matchL(")",")") 
         && matchL("{","{\n") && bloco() 
@@ -231,7 +232,7 @@ public class Parser {
     }
 //dec -> declaracao int | float | String | char
     public boolean dec_int(){
-        if(dete() || (matchL("entero", "int ") && matchT("VAR", token.getLexema()) && (matchL("=", " = ") && matchT("INT", token.getLexema() + ";\n")))){
+        if((matchL("entero", "int ") && matchT("VAR", token.getLexema()) && (matchL("=", " = ") && matchT("INT", token.getLexema() + ";\n")))){
             return true;
         }return false;
     }

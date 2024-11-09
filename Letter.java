@@ -28,6 +28,8 @@ public class Letter extends AFD {
 		reservadas.add("muestrame"); //print
 		reservadas.add("importe"); //include
 		reservadas.add("funcion"); //function
+
+
 		if(code.current() == ('\"')){
 			String palavra = "";
 			code.next();
