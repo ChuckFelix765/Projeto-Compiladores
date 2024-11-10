@@ -75,6 +75,8 @@ public class ParserPy {
             if(retorna()) return true;
         }else if(token.getTipo().equals("COMENT")){
             if(comentei()) return true;
+        }else if(token.getTipo().equals("VAR")){
+            if(dete()) return true;
         }
 
         erro("verifica");
@@ -286,6 +288,7 @@ public boolean definir(){
     || matchL("FLT", "float(" + token.getLexema() + ") \n") 
     || matchL("STRG", "\"" + token.getLexema() + "\"\n") 
     || matchL("CHAR", "\'" +token.getLexema() + "\'\n")){
+        
         return true;
     }
     tradutor.append("\n");
@@ -347,24 +350,60 @@ public boolean comentei(){
     }
 
     public boolean dete(){
-        if(matchT("RES","int ") && matchT("VAR"," "+token.getLexema()+";\n")){
+        if(matchT("VAR", tabs + token.getLexema()) && atrib()){
+            print("\n");
+            if(tabs.length()>0){
+                tabs = tabs.replaceFirst("\t", "");
+            }
             return true;
         }
-        erro("dete");
-        return false;
+        return true;
     }
 
 
     //;para(i=0 ;)
     public boolean atrib(){
-        if(matchT("VAR",token.getLexema()) && matchL("=") 
-        && (matchT("VAR",token.getLexema()+";")||matchT("INT",token.getLexema()+";")
-        ||matchT("FLT",token.getLexema()+";")||matchT("STRG",token.getLexema()+";")
-        ||matchT("CHAR",token.getLexema()+";")||expressao())){
-            // i = 0
+        if(matchL("=", "=") && e()){
             return true;
         }
-        erro("atrib");
+        return true;
+    }
+
+    public boolean e(){
+        if(matchT("CHAR","\'"+token.getLexema()+"\'") || t() && el()){
+            return true;
+        }
+        erro("Erro na expr1");
+        return false;
+    }
+
+    public boolean el(){
+        if((matchL("+","+") || matchL("-","-")) && t() && el()){
+            return true;
+        }
+        return true;
+    }
+
+    public boolean t(){
+        if(f() && tl()){
+            return true;
+        }
+        erro("Erro na expr3");
+        return false;
+    }
+
+    public boolean tl(){
+        if((matchL("*","*") || matchL("/","/")) && f() && tl()){
+            return true;
+        }
+        return true;
+    }
+
+    public boolean f(){
+        if(matchL("(","(") && e() && matchL(")",")") || valor()){
+            return true;
+        }
+        erro("Erro na expr5");
         return false;
     }
 

@@ -1,14 +1,29 @@
 importe <spanIO>
 
-funcion entero fore(entero a, entero b){
-    entero a
-    para(a = 0; a<10; a++){
-        muestrame("Valor atual de a: ")
-        muestrame(entero a)
-    }
-}
-
 funcion entero main(){
-    entero a = 10
-    cfuncion fore(a)
+    entero a
+    entero b
+    entero c
+    flotante d
+
+    muestrame("Programa Teste \n")
+    muestrame("Digite A: ")
+    escriba(entero a)
+
+    muestrame("Digite B: ")
+    escriba(entero b)
+
+    si(a<b){
+        c = a + b
+    }sino{
+        c = a - b
+    }
+
+    muestrame("C eh igual a: ")
+    muestrame(entero c)
+
+    d = c / (a + b)
+
+    muestrame("D e igual a: ")
+    muestrame(flotante d)
 }
