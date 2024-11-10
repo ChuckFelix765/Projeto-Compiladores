@@ -10,5 +10,5 @@ printf("%d\n",a);
 }
 int main(){
 int a;
-fore(a);
+fore(a, b);
 }

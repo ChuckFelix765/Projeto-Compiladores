@@ -8,6 +8,6 @@ def fore():
 
 def main():
 	int(a)
-	fore(a)
+	fore(a, b)
 
 

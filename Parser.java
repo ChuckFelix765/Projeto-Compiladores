@@ -66,22 +66,6 @@ public class Parser {
         }else if(token.getTipo().equals("COMENT")){
             if(comentei()) return true;
         }
-            /* 
-            else if(token.getTipo().equals("VAR")){
-                if(atrib()) return true;
-            }else if(token.getTipo().equals("RES")){
-                if(dete()) return true;
-            }
-
-            else if(token.getLexema().equals("flotante")){ //float
-            if(dec_int()) return true;
-        }else if(token.getLexema().equals("palabra")){// string
-            if(dec_string()) return true;
-        }else if(token.getLexema().equals("letra")){ //char
-            if(dec_char()) return true;
-        }
-            */
-
         erro("verifica");
         return false;
     }
@@ -250,8 +234,8 @@ public class Parser {
         erro("Erro no return");
         return false;
     }
-//dec -> declaracao int | float | String | char
 
+//dec -> declaracao int | float | String | char
     public boolean dete(){
         if(matchT("VAR",token.getLexema()) && atrib()){
             print(";\n");
@@ -306,6 +290,9 @@ public class Parser {
     public boolean valor(){
         if(matchT("INT",token.getLexema()) || matchT("FLT",token.getLexema()) 
         || matchT("VAR",token.getLexema())){
+            if(matchT("VIRG", ", ")){
+                valor();
+            }
             return true;
         }
         erro("Erro no valor");

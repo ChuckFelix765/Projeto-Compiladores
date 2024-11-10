@@ -418,10 +418,14 @@ public boolean comentei(){
     public boolean valor(){
         if(matchT("INT",token.getLexema()) || matchT("FLT",token.getLexema()) 
         || matchT("VAR",token.getLexema())){
+            if(matchT("VIRG", ", ")){
+                valor();
+            }
             return true;
         }else if(token.getLexema().equals(")")){
             return true;
         }
+
         erro("valor");
         return false;
     }

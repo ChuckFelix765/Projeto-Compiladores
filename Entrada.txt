@@ -10,5 +10,5 @@ funcion entero fore(){
 
 funcion entero main(){
     entero a
-    cfuncion fore(a)
+    cfuncion fore(a, b)
 }
