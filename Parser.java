@@ -105,9 +105,26 @@ public class Parser {
         return false;
     }
 
+    public boolean parametro(){
+        if((matchL("entero", "int ") || matchL("flotante", "float") 
+        || matchL("palabra", "char[] ")) && matchT("VAR", token.getLexema())){
+            if(matchT("VIRG", ", ")){
+                parametro();
+            }
+            return true;
+
+        }else if(token.getLexema().equals(")")){
+            return true;
+        }
+        erro("parametros");
+        return false;
+    }
+
+
     public boolean funcion(){
         if(matchL("funcion") && tipo() 
         && matchT("VAR",token.getLexema()) && matchL("(","(") 
+        && parametro()
         && matchL(")",")") && matchL("{","{\n") 
         && bloco() && matchL("}","\n}\n")){
             return true;
