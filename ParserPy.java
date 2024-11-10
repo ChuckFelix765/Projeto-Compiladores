@@ -436,13 +436,15 @@ public boolean comentei(){
         return false;
     }
 
+    
+
     public boolean operador(){
-        if(matchL("+"," + ") || matchL("-"," - ") 
-        || matchL("*"," * ") || matchL("/"," / ")
-        || matchL("%"," % ") || matchL("=="," == ") 
-        || matchL("<"," < ") || matchL(">"," > ") 
-        || matchL("="," = ")){
-            //Falta  (, ), :;
+        if(matchL("+","+") || matchL("-","-") 
+        || matchL("*","*") || matchL("/","/")
+        || matchL("%","%") || matchL("==","==") 
+        || matchL("<","<") || matchL(">",">") 
+        || matchL("=","=") || matchL("<=","<=")
+        || matchL(">=",">=")){
             return true;
         }
         erro("operador");
