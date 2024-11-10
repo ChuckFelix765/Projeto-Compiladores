@@ -1,16 +1,9 @@
-for (i = 1 ; i<10;i++){
-while (x>10){
-if (mipene<tupene){
-return false;
+#include <stdio.h>
 
-}elif (mipene==tupene){
-printf("%d\n",mipene);
-printf("%d\n",tupene);
-int mipene = 100;
+/*comentando*/
+int main(){
+char Ss[50];
+scanf("%s", &Ss);
+printf("%s\n",Ss);
 
-}else {
-return true;
-
-}
-}
 }

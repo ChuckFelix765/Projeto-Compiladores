@@ -48,6 +48,15 @@ public class Letter extends AFD {
 			}
 			code.next();
 			return new Token("CHAR", palavra);
+		}else if(code.current()=='#'){
+			String comentario = "";
+			code.next();
+			while(code.current()!='#'){
+				comentario += code.current();
+				code.next();
+			}
+			code.next();
+			return new Token("COMENT", comentario);
 		}
 
 		if(Character.isLetter(code.current())) {

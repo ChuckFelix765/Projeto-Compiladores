@@ -34,7 +34,7 @@ public class Main{
 			arqt.close();
 
 
-			System.out.println("Selecione a liguagem para qual deseja traduzir:\n 1 - Python \n 2 - C");
+			System.out.print("Selecione a liguagem para qual deseja traduzir:\n 1 - Python \n 2 - C\n\nDigite a opcao: ");
 			int selecao = input.nextInt();
 
 			input.close();

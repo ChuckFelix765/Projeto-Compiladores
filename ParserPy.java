@@ -71,6 +71,8 @@ public class ParserPy {
             if(dec_char()) return true;
         }else if(token.getLexema().equals("retorna")){ // return
             if(retorna()) return true;
+        }else if(token.getTipo().equals("COMENT")){
+            if(comentei()) return true;
         }
 
         erro("verifica");
@@ -252,51 +254,62 @@ public class ParserPy {
     }
 
 //dec -> declaracao int | float | String | char
-    public boolean dec_int(){
-        if(matchL("entero", tabs) && matchT("VAR", token.getLexema())){
-            if(token.getLexema().equals("=")){
-                if(matchL("=", " = ") && matchT("INT", token.getLexema() + "\n")){
-                    if(tabs.length()>0){
-                        tabs = tabs.replaceFirst("\t", "");
-                    }
-                        return true;
-                        
-                    }
-                }else{
-                    return true;
-                }
-            }
-        {
-            
-        }return false;
+public boolean definir(){
+    if(matchL("=", " = ") && matchT("INT", token.getLexema() + "\n") 
+    || matchL("FLT", token.getLexema() + "\n") 
+    || matchL("STRG", "\"" + token.getLexema() + "\"\n") 
+    || matchL("CHAR", "\'" +token.getLexema() + "\'\n")){
+        return true;
     }
-    public boolean dec_float(){
-        if(matchL("flotante", tabs) && matchT("VAR", token.getLexema()) && (matchL("=", " = ") && matchT("FLT", token.getLexema() + "\n"))){
-            if(tabs.length()>0){
-                tabs = tabs.replaceFirst("\t", "");
-            }
-            return true;
-        }return false;
+    tradutor.append("\n");
+    return true;
+}
+
+public boolean dec_int(){
+    if(matchL("entero", tabs) && matchT("VAR", token.getLexema()) && definir()){
+        if(tabs.length()>0){
+            tabs = tabs.replaceFirst("\t", "");
+        }return true;
+        
+    }return false;
+}
+public boolean dec_float(){
+    if(matchL("flotante", tabs) && matchT("VAR", token.getLexema()) && definir()){
+        if(tabs.length()>0){
+            tabs = tabs.replaceFirst("\t", "");
+        }
+        return true;
+    }return false;
+}
+
+public boolean dec_string(){
+    if(matchL("palabra", tabs+ "str(") && matchT("VAR", token.getLexema() + ")") && definir()) {
+        if(tabs.length()>0){
+        tabs = tabs.replaceFirst("\t", "");
+        }
+        return true;
+    }
+    return false;
+
+}
+public boolean dec_char(){
+    if((matchL("letra", tabs) && matchT("VAR", token.getLexema()) && definir())){
+        if(tabs.length()>0){
+            tabs = tabs.replaceFirst("\t", "");
+        }
+        return true;
+    }return false;
+}
+
+public boolean comentei(){
+    if(matchT("COMENT", tabs+ "'''\n" + token.getLexema() + "\n'''\n") ){
+
+        return true;
     }
 
-    public boolean dec_string(){
-        if(matchL("palabra", tabs) && matchT("VAR", token.getLexema()) 
-        && matchL("=", " = ") && matchT("STRG", "\"" + token.getLexema() + "\"\n")){
-            if(tabs.length()>0){
-                tabs = tabs.replaceFirst("\t", "");
-            }
-            return true;
-        }return false;
-    }
-
-    public boolean dec_char(){
-        if((matchL("letra", tabs) && matchT("VAR", token.getLexema()) && matchL("=", " = ") && matchT("CHAR", "\'" + token.getLexema() + "\'\n"))){
-            if(tabs.length()>0){
-                tabs = tabs.replaceFirst("\t", "");
-            }
-            return true;
-        }return false;
-    }
+    erro("Comentario");
+    return false;
+}
 
     public boolean incr(){
         if((matchT("VAR")||matchT("INT")||matchT("FLT")) && operador() && operador()){

@@ -17,7 +17,7 @@ public class Lexer{
 		afds.add(new MathOperator());
 		afds.add(new Number());
 		afds.add(new Letter());
-		afds.add(new Comentario());
+		//afds.add(new Comentario());
 	}	
 
 	public void skipWhiteSpace(){
