@@ -45,8 +45,10 @@ public class ParserPy {
             return true;
         }else if(token.getLexema().equals("importe")){
             if(cabeca()) return true;
-        }else if(token.getLexema().equals("funcion")){ //if
+        }else if(token.getLexema().equals("funcion")){ //funcao
             if(funcion()) return true;
+        }else if(token.getLexema().equals("cfuncion")){
+            if(cfuncion()) return true;
         }else if(token.getLexema().equals("si")){ //if
             if(iff()) return true;
         }else if(token.getLexema().equals("mientras")){ //while
@@ -87,6 +89,20 @@ public class ParserPy {
         erro("cabeca");
         return false;
     }
+    public boolean parametro(){
+        if((matchL("entero") || matchL("flotante") 
+        || matchL("palabra")) && matchT("VAR", token.getLexema())){
+            if(matchT("VIRG", ", ")){
+                parametro();
+            }
+            return true;
+
+        }else if(token.getLexema().equals(")")){
+            return true;
+        }
+        erro("parametros");
+        return false;
+    }
 
 
     public boolean funcion(){
@@ -94,12 +110,23 @@ public class ParserPy {
         && tipos_input() 
         && matchT("VAR",token.getLexema()) 
         && matchL("(", "(") 
+        && parametro()
         && matchL(")", ")") 
         && matchL("{",":\n") 
         && bloco() && matchL("}","\n\n")){
             return true;
         }
         erro("funcion");
+        return false;
+    }
+
+    public boolean cfuncion(){
+        if(matchL( "cfuncion", tabs) && matchT("VAR",token.getLexema()) 
+        && matchL("(","(") && valor() 
+        && matchL(")",")\n")){
+            return true;
+        }
+        erro("Chamada de Funcao");
         return false;
     }
 
@@ -255,8 +282,8 @@ public class ParserPy {
 
 //dec -> declaracao int | float | String | char
 public boolean definir(){
-    if(matchL("=", " = ") && matchT("INT", token.getLexema() + "\n") 
-    || matchL("FLT", token.getLexema() + "\n") 
+    if(matchL("=", " = ") && matchT("INT","int(" + token.getLexema() + ")\n") 
+    || matchL("FLT", "float(" + token.getLexema() + ") \n") 
     || matchL("STRG", "\"" + token.getLexema() + "\"\n") 
     || matchL("CHAR", "\'" +token.getLexema() + "\'\n")){
         return true;
@@ -266,7 +293,7 @@ public boolean definir(){
 }
 
 public boolean dec_int(){
-    if(matchL("entero", tabs) && matchT("VAR", token.getLexema()) && definir()){
+    if(matchL("entero", tabs + "int(") && matchT("VAR", token.getLexema() + ")") && definir()){
         if(tabs.length()>0){
             tabs = tabs.replaceFirst("\t", "");
         }return true;
@@ -274,7 +301,7 @@ public boolean dec_int(){
     }return false;
 }
 public boolean dec_float(){
-    if(matchL("flotante", tabs) && matchT("VAR", token.getLexema()) && definir()){
+    if(matchL("flotante", tabs+ "float(") && matchT("VAR", token.getLexema()+ ")") && definir()){
         if(tabs.length()>0){
             tabs = tabs.replaceFirst("\t", "");
         }
@@ -293,7 +320,7 @@ public boolean dec_string(){
 
 }
 public boolean dec_char(){
-    if((matchL("letra", tabs) && matchT("VAR", token.getLexema()) && definir())){
+    if((matchL("letra", tabs + "char( ") && matchT("VAR", token.getLexema() + ")") && definir())){
         if(tabs.length()>0){
             tabs = tabs.replaceFirst("\t", "");
         }
@@ -352,6 +379,8 @@ public boolean comentei(){
     public boolean valor(){
         if(matchT("INT",token.getLexema()) || matchT("FLT",token.getLexema()) 
         || matchT("VAR",token.getLexema())){
+            return true;
+        }else if(token.getLexema().equals(")")){
             return true;
         }
         erro("valor");

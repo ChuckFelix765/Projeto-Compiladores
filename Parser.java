@@ -39,9 +39,9 @@ public class Parser {
     public boolean verifica(){
         if(token.getLexema().equals("importe")){
             if(cabeca()) return true;
-        }else if(token.getLexema().equals("funcion")){ //if
+        }else if(token.getLexema().equals("funcion")){ // funcao
             if(funcion()) return true;
-        }else if(token.getLexema().equals("cfuncion")){ //if
+        }else if(token.getLexema().equals("cfuncion")){ //chama funcao
             if(cfuncion()) return true;
         }else if(token.getLexema().equals("si")){ //if
             if(iff()) return true;

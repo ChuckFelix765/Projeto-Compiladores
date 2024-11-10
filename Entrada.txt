@@ -1,6 +1,6 @@
 importe <spanIO>
 
-funcion entero fore(){
+funcion entero fore(entero a, entero b){
     entero a
     para(a = 0; a<10; a++){
         muestrame("Valor atual de a: ")
@@ -9,6 +9,6 @@ funcion entero fore(){
 }
 
 funcion entero main(){
-    entero a
+    entero a = 10
     cfuncion fore(a)
 }

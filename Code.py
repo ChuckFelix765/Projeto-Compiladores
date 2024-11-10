@@ -1,15 +1,13 @@
-for i in range(1, 10):
-	while x > 10:
-		if  mipene < tupene:
-			return False
+def fore(a, b):
+	int(a)
+	for a in range(0, 10):
+		print("Valor atual de a: ")
+		print("%d" %a)
 
-		elif mipene == tupene:
-			print("%d" %mipene)
-			print("%d" %tupene)
-			mipene = 100
 
-		else :
-			return True
 
+def main():
+	int(a) = int(10)
+	fore(a)
 
 
