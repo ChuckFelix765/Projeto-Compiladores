@@ -21,31 +21,28 @@ public class Parser {
     }
     
     public void main(){
-        //print("#include <stdio.h>\n\nint main(){\n");
         token = nextToken();
         
         while(!token.getTipo().equals("EOF")){
             verifica();
             if(token.getTipo().equals("EOF")){
-                //tradutor.append("\n}");
-                System.out.println("\nSintaticamente correto");
+                System.out.println("\nCodigo Aceito\n");
                 try(FileWriter writer = new FileWriter("Code.c")){
                     writer.write(tradutor.toString());
                 }catch (IOException e){
                     System.out.println(e);
                 }
-                System.out.print(tradutor.toString());
             }
         }
     }
 
     public boolean verifica(){
-        if(matchT("COMT")){
-            return true;
-        }else if(token.getLexema().equals("importe")){
+        if(token.getLexema().equals("importe")){
             if(cabeca()) return true;
         }else if(token.getLexema().equals("funcion")){ //if
             if(funcion()) return true;
+        }else if(token.getLexema().equals("cfuncion")){ //if
+            if(cfuncion()) return true;
         }else if(token.getLexema().equals("si")){ //if
             if(iff()) return true;
         }else if(token.getLexema().equals("mientras")){ //while
@@ -60,10 +57,12 @@ public class Parser {
             if(inputt()) return true;
         }else if(token.getLexema().equals("muestrame")){//print
             if(printt()) return true;
-        }else if(token.getTipo().equals("RES")){ //int
-            if(dec_int()) return true;
         }else if(token.getLexema().equals("retorna")){
             if(retorna()) return true;
+        }else if(token.getTipo().equals("RES")){ //int
+            if(dec_int()) return true;
+        }else if(token.getTipo().equals("VAR")){
+            if(dete()) return true;
         }else if(token.getTipo().equals("COMENT")){
             if(comentei()) return true;
         }
@@ -102,7 +101,7 @@ public class Parser {
         && matchL("spanIO","stdio.h") && matchL(">",">\n\n")){
             return true;
         }
-        erro("cabeca");
+        erro("Importe de biblioteca");
         return false;
     }
 
@@ -113,7 +112,16 @@ public class Parser {
         && bloco() && matchL("}","\n}\n")){
             return true;
         }
-        erro("funcion");
+        erro("Declaracao de funcao");
+        return false;
+    }
+    public boolean cfuncion(){
+        if(matchL("cfuncion") && matchT("VAR",token.getLexema()) 
+        && matchL("(","(") && valor() 
+        && matchL(")",");")){
+            return true;
+        }
+        erro("Chamada de Funcao");
         return false;
     }
 
@@ -122,7 +130,7 @@ public class Parser {
         || matchL("letra","char ") || (matchL("palabra","char ") && palav())){
             return true;
         }
-        erro("tipo");
+        erro("Determinar tipo de funcao");
         return false;
     }
 
@@ -131,7 +139,7 @@ public class Parser {
         || matchL("palabra","%s") || matchL("letra","%c")){
             return true;
         }
-        erro("tipos");
+        erro("Determinar tipo de input/output");
         return false;
     }
 
@@ -149,18 +157,18 @@ public class Parser {
         && matchL("}","\n}")){
             return true;
         }
-        erro("iff");
+        erro("Erro no if");
         return false;
     }
 
     public boolean elseif(){
-        if(matchL("enton","elif ") && matchL("(","(") 
+        if(matchL("enton","else if ") && matchL("(","(") 
         && condicao() && matchL(")",")") 
         && matchL("{","{\n") && bloco() 
         && matchL("}","\n}")){
             return true;
         }
-        erro("elsif");
+        erro("Erro no else if");
         return false;
     }
 
@@ -169,7 +177,7 @@ public class Parser {
         && bloco() && matchL("}","\n}")){
             return true;
         }
-        erro("elsee");
+        erro("Erro no else");
         return false;
     }
 
@@ -180,7 +188,7 @@ public class Parser {
         && matchL("}","\n}")){
             return true;
         }
-        erro("whilee");
+        erro("Erro no while");
         return false;
     }
 
@@ -193,7 +201,7 @@ public class Parser {
         && bloco() && matchL("}","\n}")){
             return true;
         }
-        erro("fore");
+        erro("Erro no for");
         return false;
     }
 
@@ -203,7 +211,7 @@ public class Parser {
         && matchL(")", ");\n")){
             return true;
         }
-        erro("inputt");
+        erro("Erro no input");
         return false;
     }
 
@@ -213,16 +221,16 @@ public class Parser {
         && matchT("VAR", "\\n\"," + token.getLexema()))) && matchL(")", ");\n")){
             return true;
         }
-        erro("print");
+        erro("Erro no print");
         return false;
     }
 
     public boolean retorna(){
         if(matchL("retorna", "return ") && matchL("verdad", "true;\n") 
-        || matchL("paraguai", "false;\n")){
+        || matchL("paraguai", "false;\n") || valor()){
             return true;
         }
-        erro("return");
+        erro("Erro no return");
         return false;
     }
 //dec -> declaracao int | float | String | char
@@ -236,7 +244,7 @@ public class Parser {
     }
 
     public boolean palav(){
-        if(matchT("VAR",token.getLexema()+"[50]") && dec_string()){
+        if(matchT("VAR",token.getLexema()+"[255]") && dec_string()){
             print(";\n");
             return true;
         }
@@ -247,7 +255,6 @@ public class Parser {
         if(matchL("=", "=") && e()){
             return true;
         }
-        //erro("atrib");
         return true;
     }
 
@@ -267,7 +274,7 @@ public class Parser {
         if(matchT("VAR",token.getLexema()) && operador() && operador()){
             return true;
         }
-        erro("incr");
+        erro("Erro na incrementacao");
         return false;
     }
 
@@ -275,7 +282,7 @@ public class Parser {
         if(valor() && operador() && valor()){
             return true;
         }
-        erro("condicao");
+        erro("Erro na condicao");
         return false;
     }
 
@@ -284,7 +291,7 @@ public class Parser {
         || matchT("VAR",token.getLexema())){
             return true;
         }
-        erro("valor");
+        erro("Erro no valor");
         return false;
     }
 
@@ -292,7 +299,7 @@ public class Parser {
         if(matchT("CHAR","\'"+token.getLexema()+"\'") || t() && el()){
             return true;
         }
-        erro("expr1");
+        erro("Erro na expr1");
         return false;
     }
 
@@ -307,7 +314,7 @@ public class Parser {
         if(f() && tl()){
             return true;
         }
-        erro("expr3");
+        erro("Erro na expr3");
         return false;
     }
 
@@ -322,7 +329,7 @@ public class Parser {
         if(matchL("(","(") && e() && matchL(")",")") || valor()){
             return true;
         }
-        erro("expr5");
+        erro("Erro na expr5");
         return false;
     }
 
@@ -331,10 +338,11 @@ public class Parser {
         || matchL("*","*") || matchL("/","/")
         || matchL("%","%") || matchL("==","==") 
         || matchL("<","<") || matchL(">",">") 
-        || matchL("=","=")){
+        || matchL("=","=") || matchL("<=","<=")
+        || matchL(">=",">=")){
             return true;
         }
-        erro("operador");
+        erro("Operador invalido");
         return false;
     }
 
@@ -373,7 +381,6 @@ public class Parser {
     }
     
     public void print(String code){
-        //System.out.print(code);
         tradutor.append(code);
     }
 }

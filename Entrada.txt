@@ -1,14 +1,14 @@
-para(i = 1 ; i < 10 ; i++){
-    mientras(x > 10){
-        si(mipene < tupene){
-            retorna paraguai
-        }enton(mipene == tupene){
-            muestrame(entero mipene)
-            muestrame(entero tupene)
-            entero mipene = 100
-        }sino{
-            retorna verdad
-        }
-        
+importe <spanIO>
+
+funcion entero fore(){
+    entero a
+    para(a = 0; a<10; a++){
+        muestrame("Valor atual de a: ")
+        muestrame(entero a)
     }
+}
+
+funcion entero main(){
+    entero a
+    cfuncion fore(a)
 }

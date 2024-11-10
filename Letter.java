@@ -28,6 +28,7 @@ public class Letter extends AFD {
 		reservadas.add("muestrame"); //print
 		reservadas.add("importe"); //include
 		reservadas.add("funcion"); //function
+		reservadas.add("cfuncion");
 
 
 		if(code.current() == ('\"')){

@@ -35,10 +35,20 @@ public class MathOperator extends AFD {
 				return new Token("FCHA","}");
 			case '>':
 				code.next();
-				return new Token("MAIOQ", ">");
+				if(code.current() == '='){
+					code.next();
+					return new Token("MAIOI", ">=");
+				} else{
+					return new Token("MAIOQ",">");
+				}
 			case '<':
 				code.next();
-				return new Token("MENQ", "<");
+				if(code.current() == '='){
+					code.next();
+					return new Token("MENOI", "<=");
+				} else{
+					return new Token("MENOQ","<");
+				}
 			case '=':
 				code.next();
 				if(code.current() == '='){
