@@ -294,6 +294,8 @@ public class Parser {
                 valor();
             }
             return true;
+        }else if(token.getLexema().equals(")")){
+            return true;
         }
         erro("Erro no valor");
         return false;

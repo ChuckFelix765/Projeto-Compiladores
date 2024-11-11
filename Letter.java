@@ -28,7 +28,7 @@ public class Letter extends AFD {
 		reservadas.add("muestrame"); //print
 		reservadas.add("importe"); //include
 		reservadas.add("funcion"); //function
-		reservadas.add("cfuncion");
+		reservadas.add("cfuncion"); // chama funcao
 
 
 		if(code.current() == ('\"')){
@@ -80,25 +80,6 @@ public class Letter extends AFD {
 			code.next();
 		}
 
-		/*if(code.current()=='\''){
-			cha = true;
-			letter += "\'";
-			code.next();
-
-			while(Character.isLetter(code.current())){
-				letter += code.current();
-				code.next();
-			}
-		}else if(code.current()=='\"'){
-			str = true;
-			letter += "\"";
-			code.next();
-
-			while(Character.isLetter(code.current())){
-				letter += code.current();
-				code.next();
-			}
-		}*/
 		return letter;
 	}
 

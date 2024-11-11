@@ -1,8 +1,8 @@
 #include <stdio.h>
 
-int fore(){
-int a;
-for (a=0;a<10;a++){
+/* comentario qlq */
+int fore(int a){
+for (x=0;x<10;x++){
 printf("Valor atual de a: ");
 printf("%d\n",a);
 
@@ -10,5 +10,7 @@ printf("%d\n",a);
 }
 int main(){
 int a;
-fore(a, b);
+scanf("%d", &a);
+fore(a);
 }
+main();

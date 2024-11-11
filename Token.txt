@@ -2,6 +2,7 @@
 < MENOQ, < >
 < VAR, spanIO >
 < MAIOQ, > >
+< COMENT,  comentario qlq  >
 < RES, funcion >
 < RES, entero >
 < VAR, fore >

@@ -22,13 +22,11 @@ public class ParserPy {
     }
     
     public void main(){
-        //print("#include <stdio.h>\n\nint main(){\n");
         token = nextToken();
         
         while(!token.getTipo().equals("EOF")){
             verifica();
             if(token.getTipo().equals("EOF")){
-                //tradutor.append("\n}");
                 System.out.println("\nSintaticamente correto");
                 try(FileWriter writer = new FileWriter("Code.py")){
                     writer.write(tradutor.toString());
@@ -301,7 +299,6 @@ public boolean definir(){
         
         return true;
     }
-    //tradutor.append("\n");
     return false;
 }
 
@@ -396,7 +393,6 @@ public boolean comentei(){
     }
 
 
-    //;para(i=0 ;)
     public boolean atrib(){
         if(matchL("=", "=") && e()){
             return true;

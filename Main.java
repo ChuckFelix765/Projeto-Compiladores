@@ -47,9 +47,7 @@ public class Main{
 				default -> {
 							System.out.println("Selecao invalida");
 							return;
-							//throw new AssertionError();
                         }
-					//throw new AssertionError();
 			}
 		}catch(FileNotFoundException e){
 			System.out.println("Arquivo nao encontrado");

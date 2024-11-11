@@ -1,5 +1,6 @@
 importe <spanIO>
 
+# comentario qlq #
 funcion entero fore(entero a){
 
     para(x = 0; x<10; x++){
