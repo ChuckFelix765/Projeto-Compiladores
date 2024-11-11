@@ -1,0 +1,30 @@
+importe <spanIO>
+
+funcion entero main(){
+    entero a
+    entero b
+    entero c
+    flotante d
+
+    muestrame("Plowguama Teste \n")
+    muestrame("Digite A: ")
+    escriba(entero a)
+
+    muestrame("Digite B: ")
+    escriba(entero b)
+
+    si(a<b){
+        c = a + b
+    }sino{
+        c = a - b
+    }
+
+    muestrame("C eh igual a: ")
+    muestrame(entero c)
+
+    d = c / (a + b)
+
+    muestrame("D e igual a: ")
+    muestrame(flotante d)
+}
+cfuncion main()
