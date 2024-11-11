@@ -236,15 +236,25 @@ public class ParserPy {
         StringBuilder entra = new StringBuilder();
 
         if(matchL("escriba", tabs)){
-            entra.append("input()");
+            entra.append("(input())");
              if(matchL("(") ){
+                String tipo = token.getLexema();
                 if(tipos_input()){
+                    if(tipo.equals("entero")){
+                        entra.insert(0, "int");
+                    }else if(tipo.equals("flotante")){
+                        entra.insert(0, "float");
+                    }else if(tipo.equals("palabra")){
+                        entra.insert(0, "str");
+                    }else if(tipo.equals("letra")){
+                        entra.insert(0, "char");
+                    }
                     entra.insert(0, token.getLexema() + " = ");
                     if(matchT("VAR")){
                         if(matchL(")", entra + " \n")){
                             if(tabs.length()>0){
                                 tabs = tabs.replaceFirst("\t", "");
-                            }
+                            }//VAR = input()
 
                             return true;
                         }
@@ -286,17 +296,38 @@ public class ParserPy {
 public boolean definir(){
     if(matchL("=", " = ") && matchT("INT","int(" + token.getLexema() + ")\n") 
     || matchL("FLT", "float(" + token.getLexema() + ") \n") 
-    || matchL("STRG", "\"" + token.getLexema() + "\"\n") 
+    || matchL("STRG", "str(\"" + token.getLexema() + "\")\n") 
     || matchL("CHAR", "\'" +token.getLexema() + "\'\n")){
         
         return true;
     }
-    tradutor.append("\n");
-    return true;
+    //tradutor.append("\n");
+    return false;
 }
 
+public boolean definir(String sem){
+    if(sem.equals("entero")){
+        print(" = int()\n");
+        return true;
+    }else if(sem.equals("flotante")){
+        print(" = float()\n");
+        return true;
+    }else if(sem.equals("palabra")){
+        print(" = str()\n");
+        return true;
+    }else if(sem.equals("letra")){
+        print(" = char()\n");
+        return true;
+    }
+        
+    return false;
+}
+
+
+
 public boolean dec_int(){
-    if(matchL("entero", tabs + "int(") && matchT("VAR", token.getLexema() + ")") && definir()){
+    String tipo = token.getLexema();
+    if(matchL("entero", tabs) && matchT("VAR", token.getLexema()) && definir() || definir(tipo)){
         if(tabs.length()>0){
             tabs = tabs.replaceFirst("\t", "");
         }return true;
@@ -304,7 +335,8 @@ public boolean dec_int(){
     }return false;
 }
 public boolean dec_float(){
-    if(matchL("flotante", tabs+ "float(") && matchT("VAR", token.getLexema()+ ")") && definir()){
+    String tipo = token.getLexema();
+    if(matchL("flotante", tabs) && matchT("VAR", token.getLexema()) && definir()  || definir(tipo)){
         if(tabs.length()>0){
             tabs = tabs.replaceFirst("\t", "");
         }
@@ -313,7 +345,9 @@ public boolean dec_float(){
 }
 
 public boolean dec_string(){
-    if(matchL("palabra", tabs+ "str(") && matchT("VAR", token.getLexema() + ")") && definir()) {
+    String tipo = token.getLexema();
+    StringBuilder decl_str = new StringBuilder();
+    if(matchL("palabra", tabs) && matchT("VAR", token.getLexema()) && definir() || definir(tipo)) {
         if(tabs.length()>0){
         tabs = tabs.replaceFirst("\t", "");
         }
@@ -323,7 +357,8 @@ public boolean dec_string(){
 
 }
 public boolean dec_char(){
-    if((matchL("letra", tabs + "char( ") && matchT("VAR", token.getLexema() + ")") && definir())){
+    String tipo = token.getLexema();
+    if((matchL("letra", tabs ) && matchT("VAR", token.getLexema()) && definir() || definir(tipo))){
         if(tabs.length()>0){
             tabs = tabs.replaceFirst("\t", "");
         }
