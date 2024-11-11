@@ -1,31 +1,17 @@
 importe <spanIO>
 
-funcion entero main(){
-    palabra nome
-    palabra sobrenome
-    entero idade
-    entero diferenca = 0
+funcion entero fore(entero a){
 
-    muestrame("Digite o seu nome: ")
-    escriba(palabra nome)
-    muestrame("Digite o seu sobrenome: ")
-    escriba(palabra sobrenome)
-    muestrame("Digite a sua idade: ")
-    escriba(entero idade)
-
-    si(idade < 18){
-        muestrame("MENOR DE IDADE\n")
-        mientras(idade < 18){
-            diferenca = diferenca + 1
-            idade = idade + 1
-        }
-        muestrame("RETORNE EM TANTOS ANOS: ")
-        muestrame(entero diferenca)
-    }enton(idade >= 18){
-        muestrame("MAIOR DE IDADE")
-    }sino{
-        muestrame("ERRO")
+    para(x = 0; x<10; x++){
+        muestrame("Valor atual de a: ")
+        muestrame(entero a)
     }
+}
+
+funcion entero main(){
+    entero a
+    escriba(entero a)
+    cfuncion fore(a)
 }
 
 cfuncion main()
